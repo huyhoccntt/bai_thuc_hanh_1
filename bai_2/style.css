@@ -1,0 +1,54 @@
+.container {
+    background-color: rgb(145, 145, 154);
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    padding: 15px 30px;
+}
+
+.logo {
+    width: 100%;
+    height: 150px;
+    background-color: rgb(61, 61, 61);
+}
+
+.nav {
+    width: 100%;
+    height: 100px;
+    background-color: rgb(61, 61, 61);
+}
+
+.header {
+    width: 100%;
+    height: 250px;
+    background-color: rgb(61, 61, 61);
+}
+
+.content {
+    width: 100%;
+    height: 500px;
+    display: flex;
+    gap: 15px;
+}
+
+.slidebar {
+    flex: 1;
+    background-color: rgb(61, 61, 61);
+}
+
+.body {
+    flex: 3;
+    background-color: rgb(61, 61, 61);
+}
+
+.footer {
+    width: 100%;
+    height: 100px;
+    background-color: rgb(61, 61, 61);
+}
+
+.padding-20 {
+    padding: 20px;
+}

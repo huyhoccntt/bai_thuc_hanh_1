@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Form</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="container">
+            <form class="form">
+                <h1>Form Đăng Ký Thông Tin Sinh Viên</h1>
+
+                <div class="form-group">
+                    <label for="fullname">Họ và Tên</label>
+                    <input id="fullname" name="fullname" type="text" value="Trần Mạnh Huy" />
+                </div>
+
+                <div class="form-group">
+                    <label for="birthdate">Ngày sinh</label>
+                    <input id="birthdate" name="birthdate" type="date" value="1995-01-23" />
+                </div>
+
+                <div class="form-group color-group">
+                    <label for="favorite-color">Màu yêu thích</label>
+                    <input id="favorite-color" name="favorite-color" type="color" value="#000000" />
+                </div>
+
+                <fieldset class="form-group choice-group">
+                    <legend>Giới tính</legend>
+                    <label><input name="gender" type="radio" value="nam" checked /> Nam</label>
+                    <label><input name="gender" type="radio" value="nu" /> Nữ</label>
+                </fieldset>
+
+                <div class="form-group">
+                    <label for="major">Ngành học</label>
+                    <select id="major" name="major">
+                        <option selected>Công nghệ thông tin</option>
+                        <option>Kinh tế</option>
+                        <option>Ngôn ngữ Anh</option>
+                    </select>
+                </div>
+
+                <fieldset class="form-group choice-group">
+                    <legend>Sở thích</legend>
+                    <label><input type="checkbox" name="hobbies" value="reading" checked /> Đọc sách</label>
+                    <label><input type="checkbox" name="hobbies" value="gaming" checked /> Chơi game</label>
+                    <label><input type="checkbox" name="hobbies" value="sports" checked /> Thể thao</label>
+                </fieldset>
+
+                <div class="form-group">
+                    <label for="address">Địa chỉ</label>
+                    <textarea id="address" name="address"></textarea>
+                </div>
+
+                <div class="inline-field">
+                    <label for="accept-terms">Chấp nhận điều khoản</label>
+                    <input id="accept-terms" name="accept-terms" type="checkbox" />
+                </div>
+
+                <div class="form-group">
+                    <label for="attachment">Tệp đính kèm</label>
+                    <input id="attachment" name="attachment" type="file" />
+                </div>
+
+                <fieldset class="form-group choice-group">
+                    <legend>Bạn có độc thân không?</legend>
+                    <label><input name="single" type="radio" value="yes" /> Có</label>
+                    <label><input name="single" type="radio" value="no" /> Không</label>
+                    <label><input name="single" type="radio" value="unknown" /> Không biết</label>
+                    <label><input name="single" type="radio" value="lop" /> Lốp</label>
+                </fieldset>
+
+                <div class="form-group">
+                    <label for="password">Mật khẩu</label>
+                    <input id="password" name="password" type="password" />
+                </div>
+
+                <button type="submit">Xác nhận</button>
+            </form>
+        </div>
+    </body>
+</html>
+

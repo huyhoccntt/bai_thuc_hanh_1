@@ -1,0 +1,100 @@
+
+.content-box {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	min-height: 100%;
+	margin: 0;
+}
+
+body {
+	position: relative;
+	background: #f3f3f3;
+	color: #c56666;
+	font-family: Arial, sans-serif;
+	font-size: 12px;
+}
+
+body::before,
+body::after {
+	position: fixed;
+	top: 50%;
+	color: #362f2f;
+	content: "Background";
+	writing-mode: vertical-rl;
+	transform: translateY(-50%);
+}
+
+body::before {
+	left: 8px;
+}
+
+body::after {
+	right: 8px;
+	transform: translateY(-50%) rotate(180deg);
+}
+
+.layout {
+	width: 100%;
+	min-height: 100vh;
+	margin: 0 auto;
+	padding: 20px 32px 14px;
+	display: grid;
+	grid-template-columns: 28% 1fr;
+	grid-template-rows: 28px minmax(0, 1fr) 16px;
+	column-gap: 8px;
+	row-gap: 8px;
+}
+
+.logo,
+.navigation,
+.banner,
+.body-area,
+.footer {
+	background: #1d1c1c;
+}
+
+.logo {
+	grid-column: 1 / -1;
+	display: flex;
+	align-items: center;
+	padding-left: 13px;
+	font-weight: bold;
+}
+
+.navigation {
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	padding-top: 14px;
+	line-height: 1.2;
+	background: transparent;
+}
+
+.main-content {
+	min-height: 0;
+	display: grid;
+	grid-template-rows: 52px 1fr;
+	gap: 8px;
+}
+
+.banner,
+.body-area,
+.footer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.body-area {
+	font-size: 90%;
+	font-weight: bold;
+}
+
+.footer {
+	grid-column: 1 / -1;
+}
+
+
