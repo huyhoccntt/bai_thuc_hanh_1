@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo trang blog hoàn chỉnh — Flexbox hay Grid? | Thiết kế Web</title>
+  <style>
+/* ====== Bộ khung dùng chung cho các file demo — Chương 3 ====== */
+:root{
+  --chinh:#1F509E; --chinh-dam:#163C77; --phu:#E6A811;
+  --nen:#F6F7F9; --the:#FFFFFF; --chu:#1B1F27; --chu-mo:#5C626E;
+  --vien:#E1E7F0; --bo-goc:10px;
+  --bong:0 1px 2px rgba(16,24,40,.05), 0 6px 18px rgba(16,24,40,.06);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--nen);color:var(--chu);
+  font:16px/1.6 Arial,"Helvetica Neue",Helvetica,sans-serif}
+img{max-width:100%;display:block}
+a{color:var(--chinh)}
+h1,h2,h3,h4{line-height:1.25;margin:0 0 10px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+/* ---- Thanh công cụ của bài demo (không thuộc nội dung bài học) ---- */
+.demo-bar{position:sticky;top:0;z-index:99;background:#16181D;color:#fff;
+  padding:10px 20px;font-size:14px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;
+  justify-content:space-between}
+.demo-bar b{color:var(--phu)}
+.demo-bar label{display:flex;gap:8px;align-items:center;cursor:pointer;
+  background:#2F3542;padding:7px 13px;border-radius:8px}
+.demo-bar input{accent-color:var(--phu);width:16px;height:16px}
+
+/* ---- Chế độ hiện khung thẻ ngữ nghĩa ---- */
+body:has(#hien-khung:checked) header,
+body:has(#hien-khung:checked) nav,
+body:has(#hien-khung:checked) main,
+body:has(#hien-khung:checked) section,
+body:has(#hien-khung:checked) article,
+body:has(#hien-khung:checked) aside,
+body:has(#hien-khung:checked) figure,
+body:has(#hien-khung:checked) footer{
+  position:relative;outline:2px dashed var(--chinh);outline-offset:3px;
+  margin-top:24px!important;
+}
+body:has(#hien-khung:checked) header::before,
+body:has(#hien-khung:checked) nav::before,
+body:has(#hien-khung:checked) main::before,
+body:has(#hien-khung:checked) section::before,
+body:has(#hien-khung:checked) article::before,
+body:has(#hien-khung:checked) aside::before,
+body:has(#hien-khung:checked) figure::before,
+body:has(#hien-khung:checked) footer::before{
+  position:absolute;top:-14px;left:6px;z-index:5;
+  font:600 12px/1 Consolas,"Courier New",monospace;
+  padding:3px 7px;border-radius:5px;background:var(--chinh);color:#fff;
+}
+body:has(#hien-khung:checked) header::before {content:"<header>"}
+body:has(#hien-khung:checked) nav::before    {content:"<nav>"}
+body:has(#hien-khung:checked) main::before   {content:"<main>";background:#1E6B1E}
+body:has(#hien-khung:checked) section::before{content:"<section>";background:#1E6B1E}
+body:has(#hien-khung:checked) article::before{content:"<article>";background:#1E6B1E}
+body:has(#hien-khung:checked) aside::before  {content:"<aside>";background:#B07C0C}
+body:has(#hien-khung:checked) figure::before {content:"<figure>";background:#7030A0}
+body:has(#hien-khung:checked) footer::before {content:"<footer>"}
+
+/* ---- Các khối chung ---- */
+.site-header{background:var(--the);border-bottom:1px solid var(--vien);padding:22px 0}
+.site-header h1{font-size:26px;color:var(--chinh);margin:0}
+.site-header p{margin:4px 0 0;color:var(--chu-mo);font-size:14px}
+
+.site-nav{background:var(--chinh)}
+.site-nav ul{display:flex;flex-wrap:wrap;gap:4px;list-style:none;margin:0;padding:0}
+.site-nav a{display:block;padding:12px 16px;color:#DCE6F5;text-decoration:none;font-weight:600;font-size:15px}
+.site-nav a:hover,.site-nav a[aria-current="page"]{background:var(--chinh-dam);color:#fff}
+
+.the{background:var(--the);border:1px solid var(--vien);border-radius:var(--bo-goc);
+  box-shadow:var(--bong);padding:20px 22px}
+
+.site-footer{background:#1B1F27;color:#C9CFDA;padding:26px 0;margin-top:36px;font-size:14px}
+.site-footer a{color:#fff}
+.site-footer address{font-style:normal;margin-top:6px;line-height:1.8}
+
+time{color:var(--chu-mo);font-size:14px}
+mark{background:#FFF3C4;padding:0 3px}
+figure{margin:0}
+figcaption{font-size:13px;color:var(--chu-mo);font-style:italic;padding-top:8px}
+
+/* ====== Riêng cho trang blog chi tiết (đúng như slide 2.10 – 2.13) ====== */
+main{display:grid;grid-template-columns:1fr 290px;gap:30px;
+  max-width:1080px;margin:0 auto;padding:32px 20px;align-items:start}
+article.bai{background:var(--the);border:1px solid var(--vien);border-radius:var(--bo-goc);
+  box-shadow:var(--bong);padding:26px 30px}
+article.bai > header{border-bottom:1px solid var(--vien);padding-bottom:14px;margin-bottom:18px}
+article.bai h2{font-size:28px;color:var(--chinh);margin-bottom:6px}
+article.bai p{color:#3C414C}
+article.bai figure{margin:20px 0}
+article.bai figure img{border-radius:var(--bo-goc);border:1px solid var(--vien)}
+article.bai section{margin-top:24px}
+article.bai section h3{font-size:19px;color:var(--chinh)}
+article.bai > footer{margin-top:24px;padding-top:14px;border-top:1px solid var(--vien);
+  font-size:14px;color:var(--chu-mo);background:none}
+aside .the h3{font-size:16px;color:var(--chinh)}
+aside ul{list-style:none;margin:0;padding:0;font-size:14px}
+aside li + li{margin-top:9px;padding-top:9px;border-top:1px solid var(--vien)}
+aside a{text-decoration:none}
+aside a:hover{text-decoration:underline}
+@media (max-width:880px){ main{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+
+<div class="demo-bar">
+  <span><b>Demo 4</b> — Trang blog hoàn chỉnh, không dùng một thẻ &lt;div&gt; nào cho bố cục</span>
+  <label><input type="checkbox" id="hien-khung"> Hiện khung thẻ ngữ nghĩa</label>
+</div>
+
+<!-- ===== header của cả trang ===== -->
+<header class="site-header">
+  <div class="wrap">
+    <h1>Blog Thiết kế Web</h1>
+    <p>Chia sẻ kiến thức lập trình web cho sinh viên</p>
+  </div>
+</header>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <ul>
+      <li><a href="#">Trang chủ</a></li>
+      <li><a href="#" aria-current="page">HTML</a></li>
+      <li><a href="#">CSS</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+
+  <article class="bai">
+    <!-- header lồng bên trong article: đầu đề riêng của bài viết -->
+    <header>
+      <h2>Flexbox hay Grid?</h2>
+      <time datetime="2026-09-05">05/09/2026</time>
+    </header>
+
+    <p>Bài viết so sánh hai cách dựng bố cục phổ biến nhất của CSS hiện nay.
+      Nhiều bạn mới học thường phân vân nên dùng cái nào — thực tế
+      <mark>hai công cụ này bổ sung cho nhau</mark> chứ không thay thế nhau.</p>
+
+    <figure>
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='300'%3E%3Crect width='800' height='300' fill='%23E3F0E3'/%3E%3Ctext x='400' y='165' font-size='32' fill='%231E6B1E' text-anchor='middle' font-family='Arial'%3EFlexbox vs Grid%3C/text%3E%3C/svg%3E"
+           alt="Sơ đồ so sánh cách sắp xếp phần tử của Flexbox và Grid">
+      <figcaption>Hình 1. Flexbox xếp theo một chiều, Grid chia lưới hai chiều</figcaption>
+    </figure>
+
+    <!-- section: chia bài viết thành các phần có chủ đề -->
+    <section>
+      <h3>Khi nào dùng Flexbox?</h3>
+      <p>Khi cần xếp các phần tử theo <strong>một chiều</strong> — một hàng ngang
+        hoặc một cột dọc. Ví dụ điển hình là thanh menu, hàng nút bấm,
+        hoặc căn giữa nội dung trong một khối.</p>
+    </section>
+
+    <section>
+      <h3>Khi nào dùng Grid?</h3>
+      <p>Khi cần kiểm soát <strong>cả hàng lẫn cột</strong> — dựng khung tổng thể
+        của trang, lưới sản phẩm, bảng giá. Grid cho phép đặt chính xác
+        từng khối vào từng ô đã chia sẵn.</p>
+    </section>
+
+    <!-- footer lồng bên trong article: thông tin của riêng bài viết -->
+    <footer>
+      <p>Tác giả: <strong>ThS. Nguyễn Minh Nhựt</strong> &middot; Chuyên mục: CSS</p>
+    </footer>
+  </article>
+
+  <!-- ===== aside: nội dung phụ của trang ===== -->
+  <aside>
+    <div class="the">
+      <h3>Bài viết liên quan</h3>
+      <ul>
+        <li><a href="#">Box Model là gì?</a></li>
+        <li><a href="#">SEO cơ bản cho web</a></li>
+        <li><a href="#">Bảy thẻ ngữ nghĩa nên dùng</a></li>
+      </ul>
+    </div>
+  </aside>
+
+</main>
+
+<!-- ===== footer của cả trang ===== -->
+<footer class="site-footer">
+  <div class="wrap">
+    <p>&copy; 2026 — Đại học Lạc Hồng</p>
+  </div>
+</footer>
+
+</body>
+</html>

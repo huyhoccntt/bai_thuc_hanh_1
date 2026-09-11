@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Góc Thiết kế Web — ThS. Nguyễn Minh Nhựt</title>
+<style>
+:root{
+  --bg:#f6f7f9; --surface:#fff; --ink:#16181d; --muted:#5c626e;
+  --line:#e3e6ea; --accent:#1f5eff; --accent-soft:#eaf0ff; --radius:14px;
+  --shadow:0 1px 2px rgba(16,24,40,.05), 0 8px 24px rgba(16,24,40,.06);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3{line-height:1.25;margin:0}
+
+/* ---------- Thanh điều khiển demo (không thuộc bài tập) ---------- */
+.demo-bar{
+  position:sticky;top:0;z-index:50;display:flex;flex-wrap:wrap;gap:12px;
+  align-items:center;justify-content:space-between;
+  padding:10px 20px;background:#16181d;color:#fff;font-size:14px;
+}
+.demo-bar strong{font-weight:600}
+.demo-bar span{color:#a7adb9}
+.demo-bar button{
+  font:inherit;font-weight:600;cursor:pointer;border:0;border-radius:8px;
+  padding:8px 14px;background:#2f3542;color:#fff;transition:background .15s;
+}
+.demo-bar button:hover{background:#3d4553}
+.demo-bar button[aria-pressed="true"]{background:var(--accent)}
+
+/* ---------- Bố cục ---------- */
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+.site-header{background:var(--surface);border-bottom:1px solid var(--line)}
+.site-header .wrap{
+  display:flex;flex-wrap:wrap;gap:16px;align-items:center;
+  justify-content:space-between;padding-top:26px;padding-bottom:26px;
+}
+.brand h1{font-size:26px;letter-spacing:-.02em}
+.brand p{margin:4px 0 0;color:var(--muted);font-size:14px}
+.site-nav ul{display:flex;gap:6px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+.site-nav a{
+  display:block;padding:8px 14px;border-radius:999px;
+  color:var(--muted);font-size:15px;font-weight:500;
+}
+.site-nav a:hover{background:var(--accent-soft);color:var(--accent);text-decoration:none}
+.site-nav a[aria-current="page"]{background:var(--ink);color:#fff}
+
+.layout{display:grid;grid-template-columns:1fr 300px;gap:32px;padding-top:36px;padding-bottom:36px;align-items:start}
+@media (max-width:860px){.layout{grid-template-columns:1fr}}
+
+/* ---------- Bài viết ---------- */
+.posts>h2{font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:18px}
+.post{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);overflow:hidden;margin-bottom:22px;
+}
+.post figure{margin:0}
+.post figure img{width:100%;height:170px;object-fit:cover}
+.post figcaption{padding:8px 22px 0;font-size:13px;color:var(--muted);font-style:italic}
+.post-body{padding:16px 22px 20px}
+.post h3{font-size:21px;letter-spacing:-.01em}
+.post h3 a{color:inherit}
+.post time{display:inline-block;margin-top:6px;font-size:13px;color:var(--muted)}
+.post p{margin:10px 0 0;color:#3c414c}
+.post .more{display:inline-block;margin-top:12px;font-weight:600;font-size:15px}
+.post>footer{
+  padding:12px 22px;border-top:1px solid var(--line);background:#fafbfc;
+  font-size:13px;color:var(--muted);
+}
+
+/* ---------- Cột phụ ---------- */
+.sidebar{display:grid;gap:18px;position:sticky;top:64px}
+@media (max-width:860px){.sidebar{position:static}}
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px 20px;box-shadow:var(--shadow);
+}
+.card h2{font-size:16px;margin-bottom:10px}
+.card p{margin:0;font-size:14px;color:var(--muted)}
+.card ul{list-style:none;margin:0;padding:0;font-size:14px}
+.card li+li{margin-top:8px}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tags a{
+  padding:5px 11px;border-radius:999px;background:var(--accent-soft);
+  color:var(--accent);font-size:13px;font-weight:500;
+}
+.tags a:hover{text-decoration:none;background:#dbe6ff}
+
+/* ---------- Đăng ký ---------- */
+.subscribe{
+  margin-bottom:36px;background:var(--ink);color:#fff;border-radius:var(--radius);
+  padding:28px 24px;text-align:center;
+}
+.subscribe h2{font-size:20px}
+.subscribe p{margin:8px 0 16px;color:#b3b9c4;font-size:14px}
+.subscribe form{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.subscribe input{
+  font:inherit;padding:11px 14px;border:1px solid #3a4150;border-radius:9px;
+  background:#22252d;color:#fff;min-width:250px;
+}
+.subscribe input::placeholder{color:#7d8494}
+.subscribe button{
+  font:inherit;font-weight:600;padding:11px 22px;border:0;border-radius:9px;
+  background:var(--accent);color:#fff;cursor:pointer;
+}
+
+/* ---------- Chân trang ---------- */
+.site-footer{background:var(--surface);border-top:1px solid var(--line);padding:26px 0}
+.site-footer .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center}
+.site-footer p{margin:0;font-size:14px;color:var(--muted)}
+.site-footer address{font-style:normal;font-size:14px;color:var(--muted)}
+.social{display:flex;gap:14px;list-style:none;margin:0;padding:0;font-size:14px}
+
+/* ---------- Chế độ hiện vùng semantic ---------- */
+body.show-tags header,
+body.show-tags nav,
+body.show-tags main,
+body.show-tags article,
+body.show-tags section,
+body.show-tags aside,
+body.show-tags footer,
+body.show-tags figure{
+  position:relative;outline:2px dashed var(--tag-color,#1f5eff);outline-offset:-2px;
+}
+body.show-tags [data-tag]::after{
+  content:attr(data-tag);
+  position:absolute;top:0;left:0;z-index:9;
+  background:var(--tag-color,#1f5eff);color:#fff;
+  font:600 11px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+  padding:4px 7px;border-radius:0 0 6px 0;letter-spacing:.03em;
+  pointer-events:none;
+}
+body.show-tags header{--tag-color:#c2410c}
+body.show-tags nav{--tag-color:#7c3aed}
+body.show-tags main{--tag-color:#0f766e}
+body.show-tags article{--tag-color:#1f5eff}
+body.show-tags section{--tag-color:#b45309}
+body.show-tags aside{--tag-color:#be185d}
+body.show-tags footer{--tag-color:#475569}
+body.show-tags figure{--tag-color:#0891b2}
+body.show-tags .post-body{padding-top:26px}
+</style>
+</head>
+<body>
+
+<!-- Thanh này chỉ phục vụ việc giảng dạy, KHÔNG thuộc yêu cầu bài tập -->
+<div class="demo-bar">
+  <strong>Demo mẫu — Bài thực hành thẻ Semantic <span>· nhấn nút để xem cấu trúc bên dưới lớp giao diện</span></strong>
+  <button type="button" id="toggle" aria-pressed="false">Hiện vùng semantic</button>
+</div>
+
+<header class="site-header" data-tag="&lt;header&gt;">
+  <div class="wrap">
+    <div class="brand">
+      <h1>Góc Thiết kế Web</h1>
+      <p>ThS. Nguyễn Minh Nhựt</p>
+    </div>
+    <nav class="site-nav" aria-label="Điều hướng chính" data-tag="&lt;nav&gt;">
+      <ul>
+        <li><a href="#" aria-current="page">Trang chủ</a></li>
+        <li><a href="#">Bài viết</a></li>
+        <li><a href="#">Về tôi</a></li>
+        <li><a href="#">Liên hệ</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main data-tag="&lt;main&gt;">
+  <div class="wrap">
+    <div class="layout">
+
+      <section class="posts" aria-labelledby="tt-moinhat" data-tag="&lt;section&gt;">
+        <h2 id="tt-moinhat">Bài viết mới nhất</h2>
+
+        <article class="post" data-tag="&lt;article&gt;">
+          <figure data-tag="&lt;figure&gt;">
+            <img src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='340'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%231f5eff'/%3E%3Cstop offset='1' stop-color='%237c3aed'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='800' height='340' fill='url(%23g)'/%3E%3Ctext x='400' y='190' font-family='monospace' font-size='58' fill='white' text-anchor='middle'%3E%26lt;section%26gt;%3C/text%3E%3C/svg%3E" alt="Minh hoạ thẻ section trên nền chuyển sắc xanh tím">
+            <figcaption>Ảnh minh hoạ: mỗi thẻ semantic mang một vai trò riêng.</figcaption>
+          </figure>
+          <div class="post-body">
+            <h3><a href="#">Thẻ semantic là gì và vì sao nó quan trọng?</a></h3>
+            <time datetime="2026-09-05">05/09/2026</time>
+            <p>Thẻ semantic là những thẻ HTML tự mô tả vai trò của nội dung bên trong nó. Trình duyệt, công cụ tìm kiếm và trình đọc màn hình đều dựa vào đó để hiểu trang.</p>
+            <a class="more" href="#">Đọc tiếp →</a>
+          </div>
+          <footer data-tag="&lt;footer&gt;">Tác giả: Nguyễn Minh Nhựt · 5 phút đọc</footer>
+        </article>
+
+        <article class="post" data-tag="&lt;article&gt;">
+          <figure data-tag="&lt;figure&gt;">
+            <img src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='340'%3E%3Cdefs%3E%3ClinearGradient id='g2' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%230f766e'/%3E%3Cstop offset='1' stop-color='%2322c55e'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='800' height='340' fill='url(%23g2)'/%3E%3Ctext x='400' y='190' font-family='monospace' font-size='58' fill='white' text-anchor='middle'%3E%26lt;article%26gt;%3C/text%3E%3C/svg%3E" alt="Minh hoạ thẻ article trên nền chuyển sắc xanh lá">
+            <figcaption>Ảnh minh hoạ: article là nội dung đứng riêng vẫn có nghĩa.</figcaption>
+          </figure>
+          <div class="post-body">
+            <h3><a href="#">Phân biệt section, article và div</a></h3>
+            <time datetime="2026-08-28">28/08/2026</time>
+            <p>Ba thẻ trông giống nhau khi chưa có CSS nhưng khác hẳn về ý nghĩa. Bài này đưa ra ba câu hỏi giúp bạn chọn đúng thẻ trong mọi tình huống.</p>
+            <a class="more" href="#">Đọc tiếp →</a>
+          </div>
+          <footer data-tag="&lt;footer&gt;">Tác giả: Nguyễn Minh Nhựt · 7 phút đọc</footer>
+        </article>
+
+        <article class="post" data-tag="&lt;article&gt;">
+          <figure data-tag="&lt;figure&gt;">
+            <img src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='340'%3E%3Cdefs%3E%3ClinearGradient id='g3' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23c2410c'/%3E%3Cstop offset='1' stop-color='%23f59e0b'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='800' height='340' fill='url(%23g3)'/%3E%3Ctext x='400' y='190' font-family='monospace' font-size='58' fill='white' text-anchor='middle'%3E%26lt;nav%26gt;%3C/text%3E%3C/svg%3E" alt="Minh hoạ thẻ nav trên nền chuyển sắc cam vàng">
+            <figcaption>Ảnh minh hoạ: nav dành cho nhóm điều hướng chính.</figcaption>
+          </figure>
+          <div class="post-body">
+            <h3><a href="#">Cây landmark: cách trình đọc màn hình nhìn trang của bạn</a></h3>
+            <time datetime="2026-08-19">19/08/2026</time>
+            <p>Mở DevTools, bật tab Accessibility và bạn sẽ thấy trang web dưới một hình dạng hoàn toàn khác — hình dạng mà người khiếm thị thực sự trải nghiệm.</p>
+            <a class="more" href="#">Đọc tiếp →</a>
+          </div>
+          <footer data-tag="&lt;footer&gt;">Tác giả: Nguyễn Minh Nhựt · 6 phút đọc</footer>
+        </article>
+      </section>
+
+      <aside class="sidebar" aria-label="Thông tin phụ" data-tag="&lt;aside&gt;">
+        <section class="card" aria-labelledby="tt-tacgia" data-tag="&lt;section&gt;">
+          <h2 id="tt-tacgia">Về tác giả</h2>
+          <p>Mình là Nguyễn Minh Nhựt. Blog này ghi lại những thứ hay ho về thế giới Web.</p>
+        </section>
+
+        <section class="card" aria-labelledby="tt-chude" data-tag="&lt;section&gt;">
+          <h2 id="tt-chude">Chủ đề</h2>
+          <div class="tags">
+            <a href="#">HTML</a><a href="#">CSS</a><a href="#">JavaScript</a><a href="#">Git</a>
+          </div>
+        </section>
+
+        <section class="card" aria-labelledby="tt-noibat" data-tag="&lt;section&gt;">
+          <h2 id="tt-noibat">Bài viết nổi bật</h2>
+          <ul>
+            <li><a href="#">7 lỗi HTML người mới hay mắc</a></li>
+            <li><a href="#">Flexbox trong 10 phút</a></li>
+            <li><a href="#">Đưa trang web lên GitHub Pages</a></li>
+          </ul>
+        </section>
+      </aside>
+
+    </div>
+
+    <section class="subscribe" aria-labelledby="tt-dangky" data-tag="&lt;section&gt;">
+      <h2 id="tt-dangky">Đăng ký nhận bài mới</h2>
+      <p>Mỗi tuần một bài, không quảng cáo, huỷ đăng ký bất cứ lúc nào.</p>
+      <form>
+        <label for="email" hidden>Địa chỉ email</label>
+        <input type="email" id="email" name="email" placeholder="ban@example.com" required>
+        <button type="submit">Đăng ký</button>
+      </form>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer" data-tag="&lt;footer&gt;">
+  <div class="wrap">
+    <p>© 2026 Góc Thiết kế Web. Nội dung dùng cho mục đích học tập.</p>
+    <ul class="social">
+      <li><a href="#">Facebook</a></li>
+      <li><a href="#">YouTube</a></li>
+      <li><a href="#">GitHub</a></li>
+    </ul>
+    <address>Liên hệ: <a href="mailto:nhut.works@gmail.com">nhut.works@gmail.com</a></address>
+  </div>
+</footer>
+
+<script>
+  var btn = document.getElementById('toggle');
+  btn.addEventListener('click', function () {
+    var on = document.body.classList.toggle('show-tags');
+    btn.setAttribute('aria-pressed', String(on));
+    btn.textContent = on ? 'Ẩn vùng semantic' : 'Hiện vùng semantic';
+  });
+</script>
+
+</body>
+</html>

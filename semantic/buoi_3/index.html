@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Góc Lập Trình | Học web từ nền tảng</title>
+    <link rel="stylesheet" href="style_index.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <h1>Blog Thiết kế Web</h1>
+        <p class="tagline">Chia sẻ kiến thức lập trình web cho sinh viên</p>
+      </div>
+
+      <nav class="main-nav-wrap" aria-label="Menu chính">
+        <ul class="main-nav">
+          <li><a href="#">Trang chủ</a></li>
+          <li><a href="#">HTML</a></li>
+          <li><a href="#">CSS</a></li>
+          <li><a href="#">Liên hệ</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="page-content">
+      <section class="posts" aria-labelledby="posts-title">
+        <h2 id="posts-title">Bài viết mới nhất</h2>
+
+        <article class="post">
+          <header>
+            <h3>Thẻ semantic là gì?</h3>
+            <p class="meta"><time datetime="2026-09-05">05/09/2026</time></p>
+          </header>
+
+          <figure>
+            <img
+              src="photo-1515879218367-8466d910aaa4.png"
+              alt="Màn hình máy tính hiển thị mã HTML và các thẻ semantic"
+            />
+            <figcaption>
+              Các thẻ semantic giúp trình duyệt và công cụ tìm kiếm hiểu rõ cấu trúc nội dung trang.
+            </figcaption>
+          </figure>
+
+          <p>
+            Thẻ semantic là những thẻ HTML có ý nghĩa mô tả cấu trúc và nội dung của trang web một cách rõ ràng hơn.
+          </p>
+          <p>
+            Việc sử dụng đúng thẻ giúp mã nguồn dễ đọc, cải thiện khả năng truy cập và hỗ trợ SEO tốt hơn cho website.
+          </p>
+
+          <a href="#" class="read-more">Đọc tiếp →</a>
+
+          <footer class="post-footer">
+            <p>Tác giả: Nguyễn Văn A · 5 phút đọc</p>
+          </footer>
+        </article>
+
+        <article class="post">
+          <header>
+            <h3>Flexbox giúp căn chỉnh layout như thế nào?</h3>
+            <p class="meta"><time datetime="2026-09-03">03/09/2026</time></p>
+          </header>
+
+          <figure>
+            <img
+              src="photo-1498050108023-c5249f4df085.png"
+              alt="Nhóm sinh viên cùng làm việc với thiết kế giao diện web"
+            />
+            <figcaption>
+              Flexbox cho phép căn chỉnh các phần tử theo hàng dọc và ngang trong không gian linh hoạt.
+            </figcaption>
+          </figure>
+
+          <p>
+            Flexbox là một mô hình bố cục mạnh mẽ trong CSS, giúp điều phối vị trí các mục trong một container dễ dàng.
+          </p>
+          <p>
+            Với các thuộc tính như justify-content và align-items, bạn có thể tạo giao diện nhanh chóng mà không cần hack layout phức tạp.
+          </p>
+
+          <a href="#" class="read-more">Đọc tiếp →</a>
+
+          <footer class="post-footer">
+            <p>Tác giả: Trần Mạnh H · 4 phút đọc</p>
+          </footer>
+        </article>
+
+        <article class="post">
+          <header>
+            <h3>Responsive design là gì?</h3>
+            <p class="meta"><time datetime="2026-08-28">28/08/2026</time></p>
+          </header>
+
+          <figure>
+            <img
+              src="photo-1522202176988-66273c2fd55f.png"
+              alt="Một màn hình laptop và điện thoại cùng hiển thị giao diện web responsive"
+            />
+            <figcaption>
+              Thiết kế responsive giúp giao diện hiển thị tốt trên nhiều kích thước màn hình khác nhau.
+            </figcaption>
+          </figure>
+
+          <p>
+            Thiết kế responsive là cách xây dựng giao diện web để tự động thích ứng với điện thoại, máy tính bảng và màn hình lớn.
+          </p>
+          <p>
+            Bằng cách dùng media queries và đơn vị linh hoạt, website sẽ luôn dễ nhìn và dễ sử dụng dù ở bất kỳ thiết bị nào.
+          </p>
+
+          <a href="#" class="read-more">Đọc tiếp →</a>
+
+          <footer class="post-footer">
+            <p>Tác giả: Trần Mạnh H · 6 phút đọc</p>
+          </footer>
+        </article>
+      </section>
+
+      <aside class="sidebar">
+        <section aria-labelledby="about-author-title">
+          <h2 id="about-author-title">Về tác giả</h2>
+          <p>
+            Tôi là một người yêu thích lập trình web, đặc biệt quan tâm đến HTML, CSS và JavaScript. Mục tiêu là chia sẻ kiến thức thực tế để mọi người dễ tiếp cận hơn.
+          </p>
+        </section>
+
+        <section aria-labelledby="topics-title">
+          <h2 id="topics-title">Chủ đề</h2>
+          <ul class="topic-list">
+            <li><a href="#">HTML</a></li>
+            <li><a href="#">CSS</a></li>
+            <li><a href="#">JavaScript</a></li>
+            <li><a href="#">Git</a></li>
+          </ul>
+        </section>
+
+        <section aria-labelledby="featured-title">
+          <h2 id="featured-title">Bài viết nổi bật</h2>
+          <ul class="featured-list">
+            <li><a href="#">Semantic HTML là gì?</a></li>
+            <li><a href="#">5 mẹo viết CSS sạch</a></li>
+            <li><a href="#">Git cơ bản cho người mới</a></li>
+          </ul>
+        </section>
+      </aside>
+
+      <section class="newsletter" aria-labelledby="newsletter-title">
+        <h2 id="newsletter-title">Đăng ký nhận bài mới</h2>
+        <form>
+          <label for="email" class="sr-only">Email</label>
+          <input id="email" type="email" name="email" placeholder="Nhập email của bạn" />
+          <button type="submit">Đăng ký</button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Góc Lập Trình.</p>
+
+      <ul class="social-links">
+        <li><a href="#" aria-label="Facebook">Facebook</a></li>
+        <li><a href="#" aria-label="Instagram">Instagram</a></li>
+        <li><a href="#" aria-label="GitHub">GitHub</a></li>
+      </ul>
+
+      <address>
+        <a href="mailto:huyhoccntt@goclapttrinh.com">huyhoccntt@goclapttrinh.com</a>
+        <p>123 Đường Lập Trình, Đồng Nai</p>
+      </address>
+    </footer>
+  </body>
+</html>

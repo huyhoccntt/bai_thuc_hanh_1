@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo bố cục 2 cột — Danh sách bài viết | Thiết kế Web</title>
+  <style>
+/* ====== Bộ khung dùng chung cho các file demo — Chương 3 ====== */
+:root{
+  --chinh:#1F509E; --chinh-dam:#163C77; --phu:#E6A811;
+  --nen:#F6F7F9; --the:#FFFFFF; --chu:#1B1F27; --chu-mo:#5C626E;
+  --vien:#E1E7F0; --bo-goc:10px;
+  --bong:0 1px 2px rgba(16,24,40,.05), 0 6px 18px rgba(16,24,40,.06);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--nen);color:var(--chu);
+  font:16px/1.6 Arial,"Helvetica Neue",Helvetica,sans-serif}
+img{max-width:100%;display:block}
+a{color:var(--chinh)}
+h1,h2,h3,h4{line-height:1.25;margin:0 0 10px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+/* ---- Thanh công cụ của bài demo (không thuộc nội dung bài học) ---- */
+.demo-bar{position:sticky;top:0;z-index:99;background:#16181D;color:#fff;
+  padding:10px 20px;font-size:14px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;
+  justify-content:space-between}
+.demo-bar b{color:var(--phu)}
+.demo-bar label{display:flex;gap:8px;align-items:center;cursor:pointer;
+  background:#2F3542;padding:7px 13px;border-radius:8px}
+.demo-bar input{accent-color:var(--phu);width:16px;height:16px}
+
+/* ---- Chế độ hiện khung thẻ ngữ nghĩa ---- */
+body:has(#hien-khung:checked) header,
+body:has(#hien-khung:checked) nav,
+body:has(#hien-khung:checked) main,
+body:has(#hien-khung:checked) section,
+body:has(#hien-khung:checked) article,
+body:has(#hien-khung:checked) aside,
+body:has(#hien-khung:checked) figure,
+body:has(#hien-khung:checked) footer{
+  position:relative;outline:2px dashed var(--chinh);outline-offset:3px;
+  margin-top:24px!important;
+}
+body:has(#hien-khung:checked) header::before,
+body:has(#hien-khung:checked) nav::before,
+body:has(#hien-khung:checked) main::before,
+body:has(#hien-khung:checked) section::before,
+body:has(#hien-khung:checked) article::before,
+body:has(#hien-khung:checked) aside::before,
+body:has(#hien-khung:checked) figure::before,
+body:has(#hien-khung:checked) footer::before{
+  position:absolute;top:-14px;left:6px;z-index:5;
+  font:600 12px/1 Consolas,"Courier New",monospace;
+  padding:3px 7px;border-radius:5px;background:var(--chinh);color:#fff;
+}
+body:has(#hien-khung:checked) header::before {content:"<header>"}
+body:has(#hien-khung:checked) nav::before    {content:"<nav>"}
+body:has(#hien-khung:checked) main::before   {content:"<main>";background:#1E6B1E}
+body:has(#hien-khung:checked) section::before{content:"<section>";background:#1E6B1E}
+body:has(#hien-khung:checked) article::before{content:"<article>";background:#1E6B1E}
+body:has(#hien-khung:checked) aside::before  {content:"<aside>";background:#B07C0C}
+body:has(#hien-khung:checked) figure::before {content:"<figure>";background:#7030A0}
+body:has(#hien-khung:checked) footer::before {content:"<footer>"}
+
+/* ---- Các khối chung ---- */
+.site-header{background:var(--the);border-bottom:1px solid var(--vien);padding:22px 0}
+.site-header h1{font-size:26px;color:var(--chinh);margin:0}
+.site-header p{margin:4px 0 0;color:var(--chu-mo);font-size:14px}
+
+.site-nav{background:var(--chinh)}
+.site-nav ul{display:flex;flex-wrap:wrap;gap:4px;list-style:none;margin:0;padding:0}
+.site-nav a{display:block;padding:12px 16px;color:#DCE6F5;text-decoration:none;font-weight:600;font-size:15px}
+.site-nav a:hover,.site-nav a[aria-current="page"]{background:var(--chinh-dam);color:#fff}
+
+.the{background:var(--the);border:1px solid var(--vien);border-radius:var(--bo-goc);
+  box-shadow:var(--bong);padding:20px 22px}
+
+.site-footer{background:#1B1F27;color:#C9CFDA;padding:26px 0;margin-top:36px;font-size:14px}
+.site-footer a{color:#fff}
+.site-footer address{font-style:normal;margin-top:6px;line-height:1.8}
+
+time{color:var(--chu-mo);font-size:14px}
+mark{background:#FFF3C4;padding:0 3px}
+figure{margin:0}
+figcaption{font-size:13px;color:var(--chu-mo);font-style:italic;padding-top:8px}
+
+/* ====== Riêng cho bố cục HAI CỘT có sidebar ====== */
+main{display:grid;grid-template-columns:1fr 300px;gap:28px;
+  max-width:1080px;margin:0 auto;padding:30px 20px;align-items:start}
+.ds-bai > h2{font-size:14px;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--chu-mo);margin-bottom:14px}
+article.bai{background:var(--the);border:1px solid var(--vien);border-radius:var(--bo-goc);
+  box-shadow:var(--bong);padding:20px 22px;margin-bottom:20px}
+article.bai h3{font-size:21px;margin-bottom:4px}
+article.bai h3 a{color:var(--chu);text-decoration:none}
+article.bai h3 a:hover{color:var(--chinh)}
+article.bai > p{color:#3C414C;margin:10px 0 0}
+article.bai > footer{margin-top:14px;padding-top:10px;border-top:1px solid var(--vien);
+  font-size:13px;color:var(--chu-mo);background:none}
+.doc-tiep{display:inline-block;margin-top:10px;font-weight:bold;text-decoration:none}
+aside{display:grid;gap:16px}
+aside .the h2{font-size:16px;color:var(--chinh)}
+aside ul{list-style:none;margin:0;padding:0;font-size:14px}
+aside li + li{margin-top:9px}
+aside a{text-decoration:none}
+aside a:hover{text-decoration:underline}
+.o-tim{display:flex;gap:8px}
+.o-tim input{flex:1;padding:9px 11px;border:1px solid var(--vien);border-radius:7px;font:inherit}
+.o-tim button{padding:9px 14px;border:0;border-radius:7px;background:var(--chinh);
+  color:#fff;font-weight:bold;cursor:pointer}
+.the-chu-de a{display:inline-block;padding:5px 11px;margin:0 6px 6px 0;font-size:13px;
+  background:#EAF0FB;border-radius:999px;color:var(--chinh)}
+@media (max-width:880px){ main{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+
+<div class="demo-bar">
+  <span><b>Demo 2</b> — Bố cục HAI CỘT có sidebar (blog, trang tin tức)</span>
+  <label><input type="checkbox" id="hien-khung"> Hiện khung thẻ ngữ nghĩa</label>
+</div>
+
+<header class="site-header">
+  <div class="wrap">
+    <h1>Blog Thiết kế Web</h1>
+    <p>Chia sẻ kiến thức lập trình web cho sinh viên</p>
+  </div>
+</header>
+
+<nav class="site-nav">
+  <div class="wrap">
+    <ul>
+      <li><a href="#" aria-current="page">Trang chủ</a></li>
+      <li><a href="#">HTML</a></li>
+      <li><a href="#">CSS</a></li>
+      <li><a href="#">Liên hệ</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ===== Cột trái: danh sách bài viết ===== -->
+  <div class="ds-bai">
+    <h2>Bài viết mới nhất</h2>
+
+    <!-- article: nội dung độc lập, tách riêng ra vẫn có nghĩa -->
+    <article class="bai">
+      <header>
+        <h3><a href="#">Flexbox hay Grid — chọn cái nào?</a></h3>
+        <!-- time: ngày tháng máy đọc được -->
+        <time datetime="2026-09-05">05/09/2026</time>
+      </header>
+      <p>Bài viết so sánh hai cách dựng bố cục phổ biến nhất hiện nay.
+        Ghi nhớ ngắn gọn: <mark>Flexbox cho một chiều, Grid cho hai chiều</mark>.</p>
+      <a class="doc-tiep" href="#">Đọc tiếp &rarr;</a>
+      <footer>Tác giả: Minh Nhựt &middot; Chuyên mục: CSS</footer>
+    </article>
+
+    <article class="bai">
+      <header>
+        <h3><a href="#">Box Model — vì sao bố cục hay bị vỡ?</a></h3>
+        <time datetime="2026-08-28">28/08/2026</time>
+      </header>
+      <p>Khai báo <code>width: 300px</code> nhưng phần tử lại chiếm 350px trên màn hình.
+        Nguyên nhân nằm ở <mark>padding và border</mark>.</p>
+      <a class="doc-tiep" href="#">Đọc tiếp &rarr;</a>
+      <footer>Tác giả: Minh Nhựt &middot; Chuyên mục: CSS</footer>
+    </article>
+
+    <article class="bai">
+      <header>
+        <h3><a href="#">Bảy thẻ ngữ nghĩa nên dùng thay cho div</a></h3>
+        <time datetime="2026-08-20">20/08/2026</time>
+      </header>
+      <p>Dùng đúng thẻ giúp máy tìm kiếm hiểu nội dung và trình đọc màn hình
+        điều hướng dễ dàng hơn.</p>
+      <a class="doc-tiep" href="#">Đọc tiếp &rarr;</a>
+      <footer>Tác giả: Minh Nhựt &middot; Chuyên mục: HTML</footer>
+    </article>
+  </div>
+
+  <!-- ===== Cột phải: nội dung phụ ===== -->
+  <aside>
+    <div class="the">
+      <h2>Tìm kiếm</h2>
+      <div class="o-tim">
+        <input type="search" placeholder="Nhập từ khóa..." aria-label="Tìm kiếm bài viết">
+        <button type="button">Tìm</button>
+      </div>
+    </div>
+
+    <div class="the">
+      <h2>Chủ đề</h2>
+      <p class="the-chu-de">
+        <a href="#">HTML</a><a href="#">CSS</a><a href="#">Responsive</a>
+        <a href="#">SEO</a><a href="#">Form</a>
+      </p>
+    </div>
+
+    <div class="the">
+      <h2>Bài xem nhiều</h2>
+      <ul>
+        <li><a href="#">Ba cách nhúng CSS vào HTML</a></li>
+        <li><a href="#">Media Query cho người mới</a></li>
+        <li><a href="#">Checklist SEO cơ bản</a></li>
+      </ul>
+    </div>
+  </aside>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>&copy; 2026 Blog Thiết kế Web — Đại học Lạc Hồng</p>
+  </div>
+</footer>
+
+</body>
+</html>
