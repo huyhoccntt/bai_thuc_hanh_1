@@ -1,0 +1,742 @@
+<!doctype html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Demo 5 — Thư viện Animate.css | Thiết kế Web</title>
+
+        <!-- ============================================================
+       CÀI ĐẶT ANIMATE.CSS — CHỈ MỘT DÒNG DUY NHẤT
+       CDN là máy chủ công cộng chứa sẵn thư viện.
+       ➜ Máy PHẢI CÓ MẠNG khi mở trang này.
+       Trang chủ thư viện: https://animate.style
+       ============================================================ -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+        <style>
+            :root {
+                --chinh: #1f509e;
+                --chinh-dam: #163c77;
+                --chinh-nhat: #eaf0fb;
+                --phu: #e6a811;
+                --nen: #f6f7f9;
+                --the: #ffffff;
+                --chu: #1b1f27;
+                --chu-mo: #5c626e;
+                --vien: #e1e7f0;
+                --bo-goc: 10px;
+                --bong: 0 1px 2px rgba(16, 24, 40, 0.05), 0 6px 18px rgba(16, 24, 40, 0.06);
+            }
+            /* ====== Bộ khung dùng chung cho các file demo — Chương 4 ====== */
+            * {
+                box-sizing: border-box;
+            }
+            body {
+                margin: 0;
+                background: var(--nen);
+                color: var(--chu);
+                font:
+                    16px/1.6 Arial,
+                    "Helvetica Neue",
+                    Helvetica,
+                    sans-serif;
+            }
+            img {
+                max-width: 100%;
+                display: block;
+            }
+            a {
+                color: var(--chinh);
+            }
+            h1,
+            h2,
+            h3,
+            h4 {
+                line-height: 1.25;
+                margin: 0 0 10px;
+            }
+            .wrap {
+                max-width: 1080px;
+                margin: 0 auto;
+                padding: 0 20px;
+            }
+
+            /* ---- Thanh công cụ của bài demo (không thuộc nội dung bài học) ---- */
+            .demo-bar {
+                position: sticky;
+                top: 0;
+                z-index: 99;
+                background: #16181d;
+                color: #fff;
+                padding: 10px 20px;
+                font-size: 14px;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .demo-bar b {
+                color: #e6a811;
+            }
+            .demo-bar label {
+                display: flex;
+                gap: 8px;
+                align-items: center;
+                cursor: pointer;
+                background: #2f3542;
+                padding: 7px 13px;
+                border-radius: 8px;
+                white-space: nowrap;
+            }
+            .demo-bar input {
+                accent-color: #e6a811;
+                width: 16px;
+                height: 16px;
+            }
+
+            /* ---- Tiêu đề trang ---- */
+            .site-header {
+                background: var(--the);
+                border-bottom: 1px solid var(--vien);
+                padding: 22px 0;
+            }
+            .site-header h1 {
+                font-size: 26px;
+                color: var(--chinh);
+                margin: 0;
+            }
+            .site-header p {
+                margin: 4px 0 0;
+                color: var(--chu-mo);
+                font-size: 14px;
+            }
+
+            /* ---- Mỗi mục bài học ---- */
+            main {
+                max-width: 1080px;
+                margin: 0 auto;
+                padding: 26px 20px;
+            }
+            section.muc {
+                background: var(--the);
+                border: 1px solid var(--vien);
+                border-radius: var(--bo-goc);
+                box-shadow: var(--bong);
+                padding: 22px 26px;
+                margin-bottom: 24px;
+            }
+            section.muc > h2 {
+                font-size: 22px;
+                color: var(--chinh);
+                border-bottom: 2px solid var(--vien);
+                padding-bottom: 10px;
+            }
+            section.muc h3 {
+                font-size: 17px;
+                color: var(--chinh);
+                margin-top: 22px;
+            }
+            .dan {
+                color: var(--chu-mo);
+                font-size: 15px;
+                margin-top: 0;
+            }
+
+            /* ---- Khung code ---- */
+            pre.code {
+                background: #f3f6fb;
+                border: 1px solid #c9d6ea;
+                border-radius: 8px;
+                padding: 14px 16px;
+                overflow-x: auto;
+                margin: 10px 0 0;
+                font:
+                    14px/1.65 Consolas,
+                    "Courier New",
+                    monospace;
+                color: #1b1f27;
+                white-space: pre;
+            }
+            pre.code .tag {
+                color: #0051c2;
+            }
+            pre.code .pro {
+                color: #7030a0;
+            }
+            pre.code .gt {
+                color: #008000;
+            }
+            pre.code .cm {
+                color: #6e7687;
+                font-style: italic;
+            }
+            code.nho {
+                background: #edf1f8;
+                border: 1px solid #d8e1ee;
+                border-radius: 4px;
+                padding: 1px 6px;
+                font:
+                    14px Consolas,
+                    "Courier New",
+                    monospace;
+                color: #0051c2;
+            }
+
+            /* ---- Bảng ---- */
+            table.bang {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 15px;
+                margin-top: 10px;
+            }
+            table.bang th,
+            table.bang td {
+                border: 1px solid var(--vien);
+                padding: 9px 12px;
+                text-align: left;
+                vertical-align: top;
+            }
+            table.bang thead th {
+                background: var(--chinh);
+                color: #fff;
+            }
+            table.bang tbody tr:nth-child(even) {
+                background: rgba(31, 80, 158, 0.04);
+            }
+            table.bang td:first-child {
+                font-family: Consolas, "Courier New", monospace;
+                color: #0051c2;
+            }
+
+            /* ---- Ghi chú ---- */
+            .luuy {
+                background: #fff7e6;
+                border-left: 4px solid #e6a811;
+                border-radius: 0 8px 8px 0;
+                padding: 12px 16px;
+                margin-top: 16px;
+                font-size: 15px;
+            }
+            .meo {
+                background: rgba(31, 80, 158, 0.07);
+                border-left: 4px solid var(--chinh);
+                border-radius: 0 8px 8px 0;
+                padding: 12px 16px;
+                margin-top: 16px;
+                font-size: 15px;
+            }
+
+            .site-footer {
+                background: #1b1f27;
+                color: #c9cfda;
+                padding: 24px 0;
+                margin-top: 10px;
+                font-size: 14px;
+            }
+            .site-footer a {
+                color: #fff;
+            }
+
+            /* Báo khi không tải được thư viện (máy không có mạng) */
+            .bao-mang {
+                background: #fdecea;
+                border-left: 4px solid #c5221f;
+                border-radius: 0 8px 8px 0;
+                padding: 12px 16px;
+                margin-top: 14px;
+                font-size: 15px;
+                color: #8c1d18;
+            }
+
+            /* --- Phần đầu trang minh họa --- */
+            .hero {
+                background: linear-gradient(135deg, var(--chinh), var(--chinh-dam));
+                color: #fff;
+                border-radius: var(--bo-goc);
+                padding: 44px 26px;
+                text-align: center;
+                margin-top: 14px;
+                overflow: hidden;
+            }
+            .hero h3 {
+                font-size: 34px;
+                margin: 0 0 8px;
+                color: #fff;
+            }
+            .hero p {
+                margin: 0 0 18px;
+                color: #c9daf5;
+                font-size: 17px;
+            }
+            .hero .nut {
+                display: inline-block;
+                background: var(--phu);
+                color: #1b1f27;
+                font-weight: bold;
+                padding: 12px 30px;
+                border-radius: 999px;
+                text-decoration: none;
+            }
+
+            /* --- Bảng chọn hiệu ứng --- */
+            .bang-hieu-ung {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 9px;
+                margin-top: 12px;
+            }
+            .bang-hieu-ung button {
+                padding: 9px 6px;
+                border: 1px solid var(--vien);
+                border-radius: 8px;
+                background: var(--the);
+                color: var(--chinh);
+                cursor: pointer;
+                font-weight: bold;
+                font:
+                    bold 13px Consolas,
+                    "Courier New",
+                    monospace;
+                transition:
+                    background 0.2s,
+                    border-color 0.2s;
+            }
+            .bang-hieu-ung button:hover {
+                background: var(--chinh-nhat);
+                border-color: var(--chinh);
+            }
+            .bang-hieu-ung button.dang-chon {
+                background: var(--chinh);
+                color: #fff;
+                border-color: var(--chinh);
+            }
+
+            .san-khau {
+                background: var(--chinh-nhat);
+                border: 1px dashed var(--chinh);
+                border-radius: var(--bo-goc);
+                height: 230px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-top: 14px;
+                overflow: hidden;
+            }
+            .vat-mau {
+                background: var(--the);
+                border: 1px solid var(--vien);
+                border-radius: var(--bo-goc);
+                box-shadow: var(--bong);
+                padding: 22px 30px;
+                text-align: center;
+                min-width: 210px;
+            }
+            .vat-mau b {
+                display: block;
+                color: var(--chinh);
+                font-size: 19px;
+                margin-bottom: 4px;
+            }
+            .vat-mau small {
+                color: var(--chu-mo);
+            }
+            .ten-dang-chay {
+                margin-top: 12px;
+                font:
+                    bold 15px Consolas,
+                    "Courier New",
+                    monospace;
+                color: var(--chinh);
+                text-align: center;
+            }
+
+            /* --- Danh sách sản phẩm --- */
+            .luoi-sp {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+                gap: 18px;
+                margin-top: 14px;
+            }
+            .the-sp {
+                background: var(--the);
+                border: 1px solid var(--vien);
+                border-radius: var(--bo-goc);
+                box-shadow: var(--bong);
+                padding: 20px;
+                text-align: center;
+            }
+            .the-sp h4 {
+                color: var(--chinh);
+                margin: 0 0 4px;
+                font-size: 17px;
+            }
+            .the-sp p {
+                color: var(--chu-mo);
+                font-size: 14px;
+                margin: 0;
+            }
+
+            .nut-mua {
+                display: inline-block;
+                background: #c5221f;
+                color: #fff;
+                font-weight: bold;
+                border: none;
+                border-radius: 999px;
+                padding: 13px 32px;
+                font-size: 17px;
+                cursor: pointer;
+                font-family: inherit;
+                margin-top: 14px;
+            }
+
+            .nut-phu {
+                padding: 9px 20px;
+                border: 1px solid var(--chinh);
+                background: var(--the);
+                color: var(--chinh);
+                border-radius: 8px;
+                font-weight: bold;
+                cursor: pointer;
+                font-family: inherit;
+                font-size: 15px;
+                margin: 12px 8px 0 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="demo-bar">
+            <span><b>Demo 5 — Animate.css</b> · thư viện hiệu ứng có sẵn, chỉ cần thêm class</span>
+            <span>Cần <b>kết nối mạng</b> vì thư viện tải từ CDN</span>
+        </div>
+
+        <header class="site-header">
+            <div class="wrap">
+                <h1>Thư viện Animate.css</h1>
+                <p>Demo thực hành — Chương 4, phần 4</p>
+            </div>
+        </header>
+
+        <main>
+            <!-- ===================== 1. CÀI ĐẶT ===================== -->
+            <section class="muc">
+                <h2>1. Cài đặt và cấu trúc class</h2>
+
+                <pre class="code"><span class="cm">&lt;!-- Bước 1: thêm MỘT dòng này vào &lt;head&gt; --&gt;</span>
+<span class="tag">&lt;link</span> <span class="pro">rel</span>=<span class="gt">"stylesheet"</span>
+      <span class="pro">href</span>=<span class="gt">"https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"</span><span class="tag">&gt;</span>
+
+<span class="cm">&lt;!-- Bước 2: gắn HAI class vào phần tử muốn tạo hiệu ứng --&gt;</span>
+<span class="tag">&lt;h1</span> <span class="pro">class</span>=<span class="gt">"animate__animated animate__fadeInDown"</span><span class="tag">&gt;</span>Chào mừng<span class="tag">&lt;/h1&gt;</span>
+       <span class="cm">    │                    │</span>
+       <span class="cm">    │                    └─ tên hiệu ứng muốn chạy</span>
+       <span class="cm">    └─ BẮT BUỘC: bật chế độ hiệu ứng cho phần tử</span></pre>
+
+                <table class="bang">
+                    <thead>
+                        <tr>
+                            <th>Class</th>
+                            <th>Vai trò</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>animate__animated</td>
+                            <td><b>Bắt buộc</b> — thiếu class này thì không có gì xảy ra</td>
+                        </tr>
+                        <tr>
+                            <td>animate__fadeInDown</td>
+                            <td>Tên hiệu ứng. Mọi tên đều có tiền tố <code>animate__</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="bao-mang" id="bao-mang" hidden><b>Không tải được Animate.css.</b> Máy đang không có mạng hoặc CDN bị chặn. Các hiệu ứng trong trang này sẽ không chạy. Có thể tải file <code class="nho">animate.min.css</code> về cùng thư mục rồi đổi thẻ <code class="nho">&lt;link&gt;</code> thành <code class="nho">href="animate.min.css"</code>.</div>
+            </section>
+
+            <!-- ===================== 2. THỬ CÁC HIỆU ỨNG ===================== -->
+            <section class="muc">
+                <h2>2. Thử từng hiệu ứng</h2>
+                <p class="dan">Bấm vào một tên hiệu ứng để xem nó chạy trên khối mẫu bên dưới. Bấm lại để chạy lại.</p>
+
+                <h3>Nhóm mờ dần (fade)</h3>
+                <div class="bang-hieu-ung" data-nhom><button>fadeIn</button><button>fadeInDown</button><button>fadeInUp</button> <button>fadeInLeft</button><button>fadeInRight</button><button>fadeOut</button></div>
+
+                <h3>Nhóm trượt (slide)</h3>
+                <div class="bang-hieu-ung" data-nhom><button>slideInDown</button><button>slideInUp</button> <button>slideInLeft</button><button>slideInRight</button><button>slideOutUp</button></div>
+
+                <h3>Nhóm phóng (zoom)</h3>
+                <div class="bang-hieu-ung" data-nhom>
+                    <button>zoomIn</button><button>zoomInDown</button><button>zoomInUp</button>
+                    <button>zoomOut</button>
+                </div>
+
+                <h3>Nhóm nảy (bounce)</h3>
+                <div class="bang-hieu-ung" data-nhom><button>bounceIn</button><button>bounceInDown</button> <button>bounceInLeft</button><button>bounceOut</button></div>
+
+                <h3>Nhóm lật (flip) và xoay (rotate)</h3>
+                <div class="bang-hieu-ung" data-nhom><button>flipInX</button><button>flipInY</button> <button>rotateIn</button><button>rotateInDownLeft</button></div>
+
+                <h3>Nhóm gây chú ý — dùng cho nút quan trọng</h3>
+                <div class="bang-hieu-ung" data-nhom><button>pulse</button><button>shakeX</button><button>shakeY</button> <button>heartBeat</button><button>tada</button><button>flash</button> <button>swing</button><button>rubberBand</button><button>jello</button></div>
+
+                <div class="san-khau">
+                    <div class="vat-mau" id="vat-mau">
+                        <b>Khối mẫu</b>
+                        <small>Bấm một tên hiệu ứng ở trên</small>
+                    </div>
+                </div>
+                <p class="ten-dang-chay" id="ten-dang-chay">class="animate__animated animate__…"</p>
+            </section>
+
+            <!-- ===================== 3. CLASS TIỆN ÍCH ===================== -->
+            <section class="muc">
+                <h2>3. Class chỉnh thời gian, độ trễ và số lần lặp</h2>
+                <table class="bang">
+                    <thead>
+                        <tr>
+                            <th>Class</th>
+                            <th>Tác dụng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>animate__slow / animate__slower</td>
+                            <td>Chạy chậm hơn: 2 giây / 3 giây</td>
+                        </tr>
+                        <tr>
+                            <td>animate__fast / animate__faster</td>
+                            <td>Chạy nhanh hơn: 0.8 giây / 0.5 giây</td>
+                        </tr>
+                        <tr>
+                            <td>animate__delay-1s … delay-5s</td>
+                            <td>Chờ 1 đến 5 giây rồi mới chạy</td>
+                        </tr>
+                        <tr>
+                            <td>animate__repeat-1 / 2 / 3</td>
+                            <td>Lặp lại 1, 2 hoặc 3 lần</td>
+                        </tr>
+                        <tr>
+                            <td>animate__infinite</td>
+                            <td>Lặp lại mãi mãi</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p class="dan" style="margin-top: 14px">Bấm thử để so sánh tốc độ:</p>
+                <button class="nut-phu" data-tien-ich="animate__slower">bounceIn + slower (3s)</button>
+                <button class="nut-phu" data-tien-ich="">bounceIn (mặc định 1s)</button>
+                <button class="nut-phu" data-tien-ich="animate__faster">bounceIn + faster (0.5s)</button>
+                <button class="nut-phu" data-tien-ich="animate__repeat-3">bounceIn + repeat-3</button>
+
+                <pre class="code"><span class="tag">&lt;div</span> <span class="pro">class</span>=<span class="gt">"animate__animated animate__fadeInUp animate__delay-2s animate__slow"</span><span class="tag">&gt;</span>
+  Khối này chờ 2 giây rồi trượt lên trong 2 giây
+<span class="tag">&lt;/div&gt;</span></pre>
+            </section>
+
+            <!-- ===================== 4. VÍ DỤ 1 ===================== -->
+            <section class="muc">
+                <h2>4. Ví dụ 1 — Phần đầu trang xuất hiện theo thứ tự</h2>
+                <p class="dan">Tiêu đề chạy trước, mô tả chạy sau, nút chạy sau cùng. Mắt người xem được dẫn đi theo đúng thứ tự mình muốn. Bấm <b>Chạy lại</b> để xem lại từ đầu.</p>
+
+                <div class="hero" id="hero">
+                    <h3 class="animate__animated animate__fadeInDown">LHU Shop</h3>
+                    <p class="animate__animated animate__fadeIn animate__delay-1s">Laptop giá sinh viên</p>
+                    <a href="#" class="nut animate__animated animate__zoomIn animate__delay-2s">Xem sản phẩm</a>
+                </div>
+                <button class="nut-phu" id="chay-lai-hero">Chạy lại phần đầu trang</button>
+
+                <pre class="code"><span class="tag">&lt;h1</span> <span class="pro">class</span>=<span class="gt">"animate__animated animate__fadeInDown"</span><span class="tag">&gt;</span>LHU Shop<span class="tag">&lt;/h1&gt;</span>
+
+<span class="tag">&lt;p</span> <span class="pro">class</span>=<span class="gt">"animate__animated animate__fadeIn animate__delay-1s"</span><span class="tag">&gt;</span>
+  Laptop giá sinh viên
+<span class="tag">&lt;/p&gt;</span>
+
+<span class="tag">&lt;a</span> <span class="pro">class</span>=<span class="gt">"animate__animated animate__zoomIn animate__delay-2s"</span><span class="tag">&gt;</span>Xem sản phẩm<span class="tag">&lt;/a&gt;</span></pre>
+            </section>
+
+            <!-- ===================== 5. VÍ DỤ 2 ===================== -->
+            <section class="muc">
+                <h2>5. Ví dụ 2 — Danh sách sản phẩm hiện lần lượt</h2>
+                <p class="dan">Cùng một hiệu ứng <code class="nho">zoomIn</code>, chỉ khác nhau ở class độ trễ.</p>
+
+                <div class="luoi-sp" id="luoi-sp">
+                    <article class="the-sp animate__animated animate__zoomIn">
+                        <h4>Laptop</h4>
+                        <p>18.990.000 đ</p>
+                    </article>
+                    <article class="the-sp animate__animated animate__zoomIn animate__delay-1s">
+                        <h4>Chuột</h4>
+                        <p>350.000 đ</p>
+                    </article>
+                    <article class="the-sp animate__animated animate__zoomIn animate__delay-2s">
+                        <h4>Bàn phím</h4>
+                        <p>1.290.000 đ</p>
+                    </article>
+                    <article class="the-sp animate__animated animate__zoomIn animate__delay-3s">
+                        <h4>Màn hình</h4>
+                        <p>3.490.000 đ</p>
+                    </article>
+                </div>
+                <button class="nut-phu" id="chay-lai-sp">Chạy lại danh sách</button>
+
+                <pre class="code"><span class="tag">&lt;div</span> <span class="pro">class</span>=<span class="gt">"the animate__animated animate__zoomIn"</span><span class="tag">&gt;</span>Laptop<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="pro">class</span>=<span class="gt">"the animate__animated animate__zoomIn animate__delay-1s"</span><span class="tag">&gt;</span>Chuột<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="pro">class</span>=<span class="gt">"the animate__animated animate__zoomIn animate__delay-2s"</span><span class="tag">&gt;</span>Bàn phím<span class="tag">&lt;/div&gt;</span></pre>
+            </section>
+
+            <!-- ===================== 6. VÍ DỤ 3 ===================== -->
+            <section class="muc">
+                <h2>6. Ví dụ 3 — Nút bấm gây chú ý</h2>
+                <p class="dan">Nút phình to rồi nhỏ lại, lặp mãi để kéo sự chú ý về phía nó.</p>
+
+                <div style="text-align: center; padding: 16px 0">
+                    <button class="nut-mua animate__animated animate__pulse animate__infinite">Mua ngay</button>
+                </div>
+
+                <pre class="code"><span class="tag">&lt;button</span> <span class="pro">class</span>=<span class="gt">"nut-mua animate__animated animate__pulse animate__infinite"</span><span class="tag">&gt;</span>
+  Mua ngay
+<span class="tag">&lt;/button&gt;</span></pre>
+
+                <div class="luuy">Chỉ nên cho <b>một nút duy nhất</b> trên màn hình chạy hiệu ứng lặp. Nhiều hơn sẽ làm trang rối mắt và người dùng không biết nên bấm cái nào.</div>
+            </section>
+
+            <!-- ===================== 7. LƯU Ý ===================== -->
+            <section class="muc">
+                <h2>7. Lưu ý khi dùng thư viện</h2>
+                <table class="bang">
+                    <thead>
+                        <tr>
+                            <th>Nên</th>
+                            <th>Không nên</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Dùng hiệu ứng nhẹ: fadeIn, zoomIn, slideIn</td>
+                            <td>Dùng hiệu ứng mạnh cho mọi phần tử trên trang</td>
+                        </tr>
+                        <tr>
+                            <td>Chạy một lần khi vào trang</td>
+                            <td>Cho nhiều phần tử lặp <code>infinite</code> cùng lúc</td>
+                        </tr>
+                        <tr>
+                            <td>Độ trễ tăng dần 0.2s – 0.5s giữa các phần tử</td>
+                            <td>Độ trễ quá lớn làm người dùng phải ngồi chờ</td>
+                        </tr>
+                        <tr>
+                            <td>Kiểm tra trang khi mất mạng: nội dung vẫn phải đọc được</td>
+                            <td>Đặt nội dung quan trọng trong phần tử bị ẩn chờ hiệu ứng</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="meo"><b>So sánh với tự viết @keyframes:</b> thư viện nhanh và tiện, nhưng tải thêm khoảng 70&nbsp;KB và bạn chỉ dùng vài hiệu ứng trong số hàng trăm cái có sẵn. Nếu trang chỉ cần 2 – 3 hiệu ứng đơn giản, tự viết <code class="nho">@keyframes</code> sẽ nhẹ hơn nhiều.</div>
+            </section>
+
+            <section class="muc">
+                <h2>Bài tập tại lớp</h2>
+                <ol>
+                    <li>Thêm hiệu ứng <code class="nho">animate__fadeInLeft</code> cho menu và <code class="nho">animate__fadeInRight</code> cho ô tìm kiếm.</li>
+                    <li>Làm danh sách 6 sản phẩm hiện lần lượt với độ trễ 0s, 1s, 2s, 3s, 4s, 5s.</li>
+                    <li>Vào <b>animate.style</b>, chọn một hiệu ứng chưa có trong trang này và thêm vào bảng thử ở mục 2.</li>
+                    <li>Tắt mạng rồi tải lại trang: nội dung có còn đọc được không? Vì sao?</li>
+                </ol>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="wrap">
+                <p>&copy; 2026 — Đại học Lạc Hồng · Demo Chương 4, phần 4: Animate.css</p>
+            </div>
+        </footer>
+
+        <script>
+            /* ============================================================
+   PHẦN JAVASCRIPT — CHỈ ĐỂ "CHẠY LẠI" HIỆU ỨNG
+   Animate.css là thư viện CSS thuần. Hiệu ứng tự chạy một lần
+   khi trang tải xong. Muốn chạy lại thì phải GỠ class ra rồi
+   GẮN class vào lần nữa — đó là toàn bộ việc của đoạn mã này.
+   (Kiến thức JavaScript sẽ học kỹ ở chương sau.)
+   ============================================================ */
+
+            // Chạy một hiệu ứng lên một phần tử
+            function chay(phanTu, tenHieuUng, themClass) {
+                // 1. Gỡ hết các class animate__ cũ ra
+                phanTu.className = phanTu.className
+                    .split(" ")
+                    .filter(function (c) {
+                        return c.indexOf("animate__") !== 0;
+                    })
+                    .join(" ");
+
+                // 2. Bắt trình duyệt vẽ lại, nếu không nó sẽ không nhận ra có thay đổi
+                void phanTu.offsetWidth;
+
+                // 3. Gắn class mới vào
+                phanTu.classList.add("animate__animated", "animate__" + tenHieuUng);
+                if (themClass) phanTu.classList.add(themClass);
+            }
+
+            // --- Bảng chọn hiệu ứng ở mục 2 ---
+            var vatMau = document.getElementById("vat-mau");
+            var nhanTen = document.getElementById("ten-dang-chay");
+
+            document.querySelectorAll("[data-nhom] button").forEach(function (nut) {
+                nut.addEventListener("click", function () {
+                    document.querySelectorAll("[data-nhom] button").forEach(function (b) {
+                        b.classList.remove("dang-chon");
+                    });
+                    nut.classList.add("dang-chon");
+
+                    var ten = nut.textContent.trim();
+                    chay(vatMau, ten);
+                    nhanTen.textContent = 'class="animate__animated animate__' + ten + '"';
+                });
+            });
+
+            // --- Bốn nút so sánh tốc độ ở mục 3 ---
+            document.querySelectorAll("[data-tien-ich]").forEach(function (nut) {
+                nut.addEventListener("click", function () {
+                    chay(vatMau, "bounceIn", nut.dataset.tienIch);
+                    nhanTen.textContent = 'class="animate__animated animate__bounceIn ' + (nut.dataset.tienIch || "") + '"';
+                    vatMau.scrollIntoView({ behavior: "smooth", block: "center" });
+                });
+            });
+
+            // --- Nút chạy lại cho ví dụ 1 và ví dụ 2 ---
+            function chayLaiCaKhoi(khung) {
+                khung.querySelectorAll(".animate__animated").forEach(function (el) {
+                    var cu = el.className;
+                    el.className = cu.replace(/animate__\S+/g, ""); // gỡ hết class animate__
+                    void el.offsetWidth; // bắt vẽ lại
+                    el.className = cu; // gắn lại như cũ
+                });
+            }
+            document.getElementById("chay-lai-hero").addEventListener("click", function () {
+                chayLaiCaKhoi(document.getElementById("hero"));
+            });
+            document.getElementById("chay-lai-sp").addEventListener("click", function () {
+                chayLaiCaKhoi(document.getElementById("luoi-sp"));
+            });
+
+            // --- Kiểm tra thư viện đã tải được chưa ---
+            window.addEventListener("load", function () {
+                var thu = document.createElement("div");
+                thu.className = "animate__animated animate__fadeIn";
+                thu.style.position = "absolute";
+                thu.style.left = "-9999px";
+                document.body.appendChild(thu);
+                var ten = getComputedStyle(thu).animationName;
+                document.body.removeChild(thu);
+                if (ten === "none" || ten === "") {
+                    document.getElementById("bao-mang").hidden = false;
+                    console.warn("[Demo] Không tải được Animate.css từ CDN — kiểm tra kết nối mạng.");
+                } else {
+                    console.log("[Demo] Animate.css đã sẵn sàng.");
+                }
+            });
+        </script>
+    </body>
+</html>

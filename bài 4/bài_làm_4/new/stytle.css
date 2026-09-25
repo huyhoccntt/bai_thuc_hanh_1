@@ -1,0 +1,40 @@
+.container{
+    display: flex;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+.item{
+    flex: 1 1 200px;
+    margin: 10px;
+}
+
+@media (max-width: 600px) {    
+    .container {
+        flex-direction: column;
+        grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+    
+    }
+    .item {
+        background-color: lightblue;
+    }
+}
+
+
+@media (max-width: 600px) {
+    .container {
+        flex-direction: column;
+        grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+    }
+    .item {
+background-color: rgb(124, 0, 240);
+    }
+    
+}
+@media (max-width: 400px) {
+    .container {
+        flex-direction: column;
+        grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+    }
+    .item {
+    background-color: rgb(37, 165, 48);
+    }
+}

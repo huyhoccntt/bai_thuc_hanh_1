@@ -1,0 +1,950 @@
+<!doctype html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Demo 3 — CSS Transition và Transform | Thiết kế Web</title>
+        <style>
+            :root {
+                --chinh: #1f509e;
+                --chinh-dam: #163c77;
+                --chinh-nhat: #eaf0fb;
+                --phu: #e6a811;
+                --nen: #f6f7f9;
+                --the: #ffffff;
+                --chu: #1b1f27;
+                --chu-mo: #5c626e;
+                --vien: #e1e7f0;
+                --bo-goc: 10px;
+                --bong: 0 1px 2px rgba(16, 24, 40, 0.05), 0 6px 18px rgba(16, 24, 40, 0.06);
+            }
+            /* ====== Bộ khung dùng chung cho các file demo — Chương 4 ====== */
+            * {
+                box-sizing: border-box;
+            }
+            body {
+                margin: 0;
+                background: var(--nen);
+                color: var(--chu);
+                font:
+                    16px/1.6 Arial,
+                    "Helvetica Neue",
+                    Helvetica,
+                    sans-serif;
+            }
+            img {
+                max-width: 100%;
+                display: block;
+            }
+            a {
+                color: var(--chinh);
+            }
+            h1,
+            h2,
+            h3,
+            h4 {
+                line-height: 1.25;
+                margin: 0 0 10px;
+            }
+            .wrap {
+                max-width: 1080px;
+                margin: 0 auto;
+                padding: 0 20px;
+            }
+
+            /* ---- Thanh công cụ của bài demo (không thuộc nội dung bài học) ---- */
+            .demo-bar {
+                position: sticky;
+                top: 0;
+                z-index: 99;
+                background: #16181d;
+                color: #fff;
+                padding: 10px 20px;
+                font-size: 14px;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .demo-bar b {
+                color: #e6a811;
+            }
+            .demo-bar label {
+                display: flex;
+                gap: 8px;
+                align-items: center;
+                cursor: pointer;
+                background: #2f3542;
+                padding: 7px 13px;
+                border-radius: 8px;
+                white-space: nowrap;
+            }
+            .demo-bar input {
+                accent-color: #e6a811;
+                width: 16px;
+                height: 16px;
+            }
+
+            /* ---- Tiêu đề trang ---- */
+            .site-header {
+                background: var(--the);
+                border-bottom: 1px solid var(--vien);
+                padding: 22px 0;
+            }
+            .site-header h1 {
+                font-size: 26px;
+                color: var(--chinh);
+                margin: 0;
+            }
+            .site-header p {
+                margin: 4px 0 0;
+                color: var(--chu-mo);
+                font-size: 14px;
+            }
+
+            /* ---- Mỗi mục bài học ---- */
+            main {
+                max-width: 1080px;
+                margin: 0 auto;
+                padding: 26px 20px;
+            }
+            section.muc {
+                background: var(--the);
+                border: 1px solid var(--vien);
+                border-radius: var(--bo-goc);
+                box-shadow: var(--bong);
+                padding: 22px 26px;
+                margin-bottom: 24px;
+            }
+            section.muc > h2 {
+                font-size: 22px;
+                color: var(--chinh);
+                border-bottom: 2px solid var(--vien);
+                padding-bottom: 10px;
+            }
+            section.muc h3 {
+                font-size: 17px;
+                color: var(--chinh);
+                margin-top: 22px;
+            }
+            .dan {
+                color: var(--chu-mo);
+                font-size: 15px;
+                margin-top: 0;
+            }
+
+            /* ---- Khung code ---- */
+            pre.code {
+                background: #f3f6fb;
+                border: 1px solid #c9d6ea;
+                border-radius: 8px;
+                padding: 14px 16px;
+                overflow-x: auto;
+                margin: 10px 0 0;
+                font:
+                    14px/1.65 Consolas,
+                    "Courier New",
+                    monospace;
+                color: #1b1f27;
+                white-space: pre;
+            }
+            pre.code .tag {
+                color: #0051c2;
+            }
+            pre.code .pro {
+                color: #7030a0;
+            }
+            pre.code .gt {
+                color: #008000;
+            }
+            pre.code .cm {
+                color: #6e7687;
+                font-style: italic;
+            }
+            code.nho {
+                background: #edf1f8;
+                border: 1px solid #d8e1ee;
+                border-radius: 4px;
+                padding: 1px 6px;
+                font:
+                    14px Consolas,
+                    "Courier New",
+                    monospace;
+                color: #0051c2;
+            }
+
+            /* ---- Bảng ---- */
+            table.bang {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 15px;
+                margin-top: 10px;
+            }
+            table.bang th,
+            table.bang td {
+                border: 1px solid var(--vien);
+                padding: 9px 12px;
+                text-align: left;
+                vertical-align: top;
+            }
+            table.bang thead th {
+                background: var(--chinh);
+                color: #fff;
+            }
+            table.bang tbody tr:nth-child(even) {
+                background: rgba(31, 80, 158, 0.04);
+            }
+            table.bang td:first-child {
+                font-family: Consolas, "Courier New", monospace;
+                color: #0051c2;
+            }
+
+            /* ---- Ghi chú ---- */
+            .luuy {
+                background: #fff7e6;
+                border-left: 4px solid #e6a811;
+                border-radius: 0 8px 8px 0;
+                padding: 12px 16px;
+                margin-top: 16px;
+                font-size: 15px;
+            }
+            .meo {
+                background: rgba(31, 80, 158, 0.07);
+                border-left: 4px solid var(--chinh);
+                border-radius: 0 8px 8px 0;
+                padding: 12px 16px;
+                margin-top: 16px;
+                font-size: 15px;
+            }
+
+            .site-footer {
+                background: #1b1f27;
+                color: #c9cfda;
+                padding: 24px 0;
+                margin-top: 10px;
+                font-size: 14px;
+            }
+            .site-footer a {
+                color: #fff;
+            }
+
+            /* ============================================================
+   1. TRANSITION LÀ GÌ?
+   Không có transition: thay đổi xảy ra TỨC THÌ (giật).
+   Có transition: thay đổi diễn ra TỪ TỪ trong khoảng thời gian.
+   ============================================================ */
+            .doi-sanh {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                gap: 18px;
+                margin-top: 14px;
+            }
+            .hop {
+                height: 110px;
+                border-radius: var(--bo-goc);
+                background: var(--chinh);
+                color: #fff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                font-weight: bold;
+                cursor: pointer;
+                padding: 12px;
+            }
+            .hop-khong-hieu-ung:hover {
+                background: var(--phu);
+                color: #1b1f27;
+            }
+            .hop-co-hieu-ung {
+                transition:
+                    background-color 0.5s,
+                    color 0.5s;
+            }
+            .hop-co-hieu-ung:hover {
+                background: var(--phu);
+                color: #1b1f27;
+            }
+
+            /* ============================================================
+   2. BỐN THUỘC TÍNH CỦA TRANSITION
+   transition-property        thuộc tính nào được chuyển động
+   transition-duration        chạy trong bao lâu
+   transition-timing-function nhịp nhanh chậm ra sao
+   transition-delay           chờ bao lâu rồi mới chạy
+   ============================================================ */
+            .duong {
+                background: var(--chinh-nhat);
+                border: 1px solid var(--vien);
+                border-radius: var(--bo-goc);
+                padding: 14px 16px;
+                margin-top: 12px;
+                cursor: pointer;
+            }
+            .duong .nhan {
+                font-size: 14px;
+                font-weight: bold;
+                color: var(--chinh);
+                margin-bottom: 8px;
+                font-family: Consolas, "Courier New", monospace;
+            }
+            .vien-chay {
+                height: 34px;
+                background: var(--phu);
+                border-radius: 8px;
+                width: 60px;
+            }
+
+            .duong:hover .vien-chay {
+                width: 100%;
+            }
+            .d1 .vien-chay {
+                transition: width 0.3s;
+            }
+            .d2 .vien-chay {
+                transition: width 1.5s;
+            }
+            .d3 .vien-chay {
+                transition: width 0.6s;
+                transition-delay: 0.6s;
+            }
+
+            /* ============================================================
+   3. TIMING FUNCTION — SO SÁNH TRỰC TIẾP
+   Rê chuột vào cả khối để CẢ NĂM ô cùng chạy một lúc,
+   nhờ vậy nhìn ra ngay sự khác nhau về nhịp.
+   ============================================================ */
+            .duong-dua {
+                background: var(--the);
+                border: 1px solid var(--vien);
+                border-radius: var(--bo-goc);
+                padding: 18px;
+                margin-top: 14px;
+                cursor: pointer;
+            }
+            .lane {
+                display: grid;
+                grid-template-columns: 150px 1fr;
+                gap: 12px;
+                align-items: center;
+                margin-bottom: 10px;
+            }
+            .lane .ten {
+                font:
+                    bold 13px Consolas,
+                    "Courier New",
+                    monospace;
+                color: var(--chinh);
+            }
+            .ray {
+                background: var(--chinh-nhat);
+                border-radius: 999px;
+                height: 30px;
+                position: relative;
+            }
+            .xe {
+                position: absolute;
+                top: 3px;
+                left: 3px;
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                background: var(--chinh);
+                transition: left 1.6s;
+            }
+            .duong-dua:hover .xe {
+                left: calc(100% - 27px);
+            }
+            .l-linear .xe {
+                transition-timing-function: linear;
+            }
+            .l-ease .xe {
+                transition-timing-function: ease;
+            }
+            .l-ease-in .xe {
+                transition-timing-function: ease-in;
+            }
+            .l-ease-out .xe {
+                transition-timing-function: ease-out;
+            }
+            .l-bezier .xe {
+                transition-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+                background: var(--phu);
+            }
+
+            /* ============================================================
+   4. TRANSFORM — BIẾN ĐỔI HÌNH DẠNG
+   translate: dời chỗ · rotate: xoay
+   scale: phóng to thu nhỏ · skew: làm nghiêng
+   ============================================================ */
+            .luoi-bien {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                gap: 18px;
+                margin-top: 14px;
+            }
+            .o-bien {
+                background: var(--the);
+                border: 1px solid var(--vien);
+                border-radius: var(--bo-goc);
+                padding: 16px;
+                text-align: center;
+                overflow: hidden;
+            }
+            .o-bien .vuong {
+                width: 78px;
+                height: 78px;
+                margin: 8px auto 12px;
+                border-radius: 10px;
+                background: var(--chinh);
+                color: #fff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 13px;
+                font-weight: bold;
+                transition: transform 0.45s;
+            }
+            .o-bien code {
+                font-size: 12px;
+                color: var(--chu-mo);
+                font-family: Consolas, "Courier New", monospace;
+                word-break: break-all;
+            }
+            .o-bien:hover .vuong {
+                background: var(--phu);
+                color: #1b1f27;
+            }
+
+            .b-translate:hover .vuong {
+                transform: translateX(28px);
+            }
+            .b-translate-y:hover .vuong {
+                transform: translateY(-22px);
+            }
+            .b-rotate:hover .vuong {
+                transform: rotate(45deg);
+            }
+            .b-scale:hover .vuong {
+                transform: scale(1.4);
+            }
+            .b-scale-nho:hover .vuong {
+                transform: scale(0.65);
+            }
+            .b-skew:hover .vuong {
+                transform: skewX(-18deg);
+            }
+            .b-gop:hover .vuong {
+                transform: translateY(-12px) rotate(-8deg) scale(1.15);
+            }
+
+            /* ============================================================
+   5. THẺ SẢN PHẨM CÓ HIỆU ỨNG — VÍ DỤ THỰC TẾ
+   ============================================================ */
+            .luoi-sp {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 20px;
+                margin-top: 14px;
+            }
+            .the-sp {
+                background: var(--the);
+                border: 1px solid var(--vien);
+                border-radius: var(--bo-goc);
+                box-shadow: var(--bong);
+                overflow: hidden;
+                transition:
+                    transform 0.3s ease,
+                    box-shadow 0.3s ease;
+            }
+            .the-sp:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 14px 34px rgba(16, 24, 40, 0.18);
+            }
+            .the-sp .anh {
+                background: var(--chinh-nhat);
+                height: 120px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--chinh);
+                font-weight: bold;
+                overflow: hidden;
+            }
+            .the-sp .anh span {
+                transition: transform 0.45s;
+            }
+            .the-sp:hover .anh span {
+                transform: scale(1.18);
+            }
+            .the-sp .than {
+                padding: 16px;
+            }
+            .the-sp h4 {
+                margin: 0 0 4px;
+                font-size: 17px;
+            }
+            .the-sp .gia {
+                color: var(--chinh);
+                font-weight: bold;
+                font-size: 19px;
+            }
+
+            /* Nút có hiệu ứng */
+            .nut {
+                display: inline-block;
+                padding: 11px 26px;
+                border: none;
+                border-radius: var(--bo-goc);
+                background: var(--chinh);
+                color: #fff;
+                font-weight: bold;
+                font-size: 16px;
+                cursor: pointer;
+                font-family: inherit;
+                margin: 14px 10px 0 0;
+                transition:
+                    background-color 0.25s,
+                    transform 0.25s,
+                    box-shadow 0.25s;
+            }
+            .nut:hover {
+                background: var(--chinh-dam);
+                transform: translateY(-3px);
+                box-shadow: 0 8px 20px rgba(31, 80, 158, 0.35);
+            }
+            .nut:active {
+                transform: translateY(0);
+                box-shadow: none;
+            }
+
+            .nut-day {
+                position: relative;
+                overflow: hidden;
+                background: var(--the);
+                color: var(--chinh);
+                border: 2px solid var(--chinh);
+            }
+            .nut-day::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: var(--chinh);
+                transform: scaleX(0);
+                transform-origin: left;
+                transition: transform 0.3s;
+                z-index: 0;
+            }
+            .nut-day:hover::before {
+                transform: scaleX(1);
+            }
+            .nut-day span {
+                position: relative;
+                z-index: 1;
+                transition: color 0.3s;
+            }
+            .nut-day:hover span {
+                color: #fff;
+            }
+            .nut-day:hover {
+                background: var(--the);
+                transform: none;
+                box-shadow: none;
+            }
+
+            /* Menu gạch chân chạy từ giữa ra */
+            .menu-gach {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 26px;
+                margin-top: 14px;
+                border-bottom: 1px solid var(--vien);
+                padding-bottom: 12px;
+            }
+            .menu-gach a {
+                position: relative;
+                text-decoration: none;
+                color: var(--chu);
+                font-weight: bold;
+                padding-bottom: 6px;
+            }
+            .menu-gach a::after {
+                content: "";
+                position: absolute;
+                left: 50%;
+                bottom: 0;
+                width: 0;
+                height: 3px;
+                background: var(--chinh);
+                border-radius: 2px;
+                transition:
+                    width 0.3s,
+                    left 0.3s;
+            }
+            .menu-gach a:hover {
+                color: var(--chinh);
+            }
+            .menu-gach a:hover::after {
+                width: 100%;
+                left: 0;
+            }
+
+            /* ============================================================
+   6. CHỈ NÊN CHUYỂN ĐỘNG transform VÀ opacity
+   ============================================================ */
+            .so-sanh-muot {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 18px;
+                margin-top: 14px;
+            }
+            .o-muot {
+                background: var(--the);
+                border: 1px solid var(--vien);
+                border-radius: var(--bo-goc);
+                padding: 16px;
+                text-align: center;
+                cursor: pointer;
+            }
+            .o-muot .khoi {
+                width: 70px;
+                height: 70px;
+                background: var(--chinh);
+                border-radius: 8px;
+                margin: 10px auto;
+            }
+            .giat .khoi {
+                transition:
+                    width 0.5s,
+                    height 0.5s;
+            }
+            .giat:hover .khoi {
+                width: 110px;
+                height: 110px;
+            }
+            .muot .khoi {
+                transition: transform 0.5s;
+            }
+            .muot:hover .khoi {
+                transform: scale(1.57);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="demo-bar">
+            <span><b>Demo 3 — Transition &amp; Transform</b> · rê chuột vào từng khối để xem hiệu ứng</span>
+            <span>Trên điện thoại: chạm vào khối thay cho rê chuột</span>
+        </div>
+
+        <header class="site-header">
+            <div class="wrap">
+                <h1>CSS Transition &amp; Transform</h1>
+                <p>Demo thực hành — Chương 4, phần 3 (a)</p>
+            </div>
+        </header>
+
+        <main>
+            <!-- ===================== 1. CÓ VÀ KHÔNG ===================== -->
+            <section class="muc">
+                <h2>1. Có transition khác gì không có?</h2>
+                <p class="dan">Rê chuột vào cả hai khối dưới đây. Cùng một thay đổi màu, nhưng cảm giác hoàn toàn khác nhau.</p>
+
+                <div class="doi-sanh">
+                    <div class="hop hop-khong-hieu-ung">KHÔNG có transition<br />(đổi màu giật ngay)</div>
+                    <div class="hop hop-co-hieu-ung">CÓ transition .5s<br />(đổi màu từ từ)</div>
+                </div>
+
+                <pre class="code"><span class="cm">/* Khai báo transition trên trạng thái BÌNH THƯỜNG, không phải trên :hover */</span>
+<span class="tag">.hop</span>{
+  <span class="pro">background</span>: <span class="gt">#1F509E</span>;
+  <span class="pro">transition</span>: <span class="gt">background-color .5s</span>;   <span class="cm">← đặt ở đây</span>
+}
+<span class="tag">.hop:hover</span>{
+  <span class="pro">background</span>: <span class="gt">#E6A811</span>;
+}</pre>
+
+                <div class="luuy"><b>Lỗi hay gặp:</b> đặt <code class="nho">transition</code> vào trong <code class="nho">:hover</code>. Khi đó lúc rê chuột VÀO thì mượt, nhưng lúc rời chuột RA lại giật về ngay.</div>
+            </section>
+
+            <!-- ===================== 2. BỐN THUỘC TÍNH ===================== -->
+            <section class="muc">
+                <h2>2. Bốn thuộc tính của transition</h2>
+                <pre class="code"><span class="pro">transition</span>: <span class="gt">&lt;property&gt; &lt;duration&gt; &lt;timing-function&gt; &lt;delay&gt;</span>;
+
+<span class="cm">/* Viết đầy đủ */</span>
+<span class="pro">transition-property</span>:        <span class="gt">background-color</span>;
+<span class="pro">transition-duration</span>:        <span class="gt">.4s</span>;
+<span class="pro">transition-timing-function</span>: <span class="gt">ease</span>;
+<span class="pro">transition-delay</span>:           <span class="gt">0s</span>;
+
+<span class="cm">/* Viết gọn — cách hay dùng nhất */</span>
+<span class="pro">transition</span>: <span class="gt">background-color .4s ease</span>;
+
+<span class="cm">/* Nhiều thuộc tính cùng lúc, ngăn cách bằng dấu phẩy */</span>
+<span class="pro">transition</span>: <span class="gt">transform .3s ease, box-shadow .3s ease</span>;
+
+<span class="cm">/* all = mọi thuộc tính (tiện nhưng nặng máy, hạn chế dùng) */</span>
+<span class="pro">transition</span>: <span class="gt">all .3s</span>;</pre>
+
+                <h3>So sánh thời gian và độ trễ — rê chuột vào từng dòng</h3>
+                <div class="duong d1">
+                    <div class="nhan">transition: width .3s — nhanh</div>
+                    <div class="vien-chay"></div>
+                </div>
+                <div class="duong d2">
+                    <div class="nhan">transition: width 1.5s — chậm</div>
+                    <div class="vien-chay"></div>
+                </div>
+                <div class="duong d3">
+                    <div class="nhan">transition: width .6s; delay .6s — chờ rồi mới chạy</div>
+                    <div class="vien-chay"></div>
+                </div>
+
+                <table class="bang">
+                    <thead>
+                        <tr>
+                            <th>Thời lượng</th>
+                            <th>Cảm giác</th>
+                            <th>Dùng cho</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0.1s – 0.2s</td>
+                            <td>Gần như tức thì</td>
+                            <td>Đổi màu nút, viền ô nhập</td>
+                        </tr>
+                        <tr>
+                            <td>0.25s – 0.4s</td>
+                            <td>Vừa đẹp — <b>hay dùng nhất</b></td>
+                            <td>Thẻ sản phẩm, menu, nút bấm</td>
+                        </tr>
+                        <tr>
+                            <td>0.5s – 0.8s</td>
+                            <td>Chậm rãi, có chủ ý</td>
+                            <td>Mở hộp thoại, trượt menu</td>
+                        </tr>
+                        <tr>
+                            <td>&gt; 1s</td>
+                            <td>Người dùng bắt đầu sốt ruột</td>
+                            <td>Hạn chế dùng</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- ===================== 3. TIMING FUNCTION ===================== -->
+            <section class="muc">
+                <h2>3. Timing function — nhịp của hiệu ứng</h2>
+                <p class="dan">Rê chuột vào khung dưới đây: <b>cả năm viên bi cùng xuất phát và cùng chạy 1.6 giây</b>, nhưng nhịp nhanh chậm khác nhau.</p>
+
+                <div class="duong-dua">
+                    <div class="lane l-linear">
+                        <span class="ten">linear</span>
+                        <div class="ray"><div class="xe"></div></div>
+                    </div>
+                    <div class="lane l-ease">
+                        <span class="ten">ease (mặc định)</span>
+                        <div class="ray"><div class="xe"></div></div>
+                    </div>
+                    <div class="lane l-ease-in">
+                        <span class="ten">ease-in</span>
+                        <div class="ray"><div class="xe"></div></div>
+                    </div>
+                    <div class="lane l-ease-out">
+                        <span class="ten">ease-out</span>
+                        <div class="ray"><div class="xe"></div></div>
+                    </div>
+                    <div class="lane l-bezier">
+                        <span class="ten">cubic-bezier</span>
+                        <div class="ray"><div class="xe"></div></div>
+                    </div>
+                </div>
+
+                <table class="bang">
+                    <thead>
+                        <tr>
+                            <th>Giá trị</th>
+                            <th>Nhịp chạy</th>
+                            <th>Hợp với</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>linear</td>
+                            <td>Đều từ đầu đến cuối</td>
+                            <td>Vòng quay tải, thanh tiến trình</td>
+                        </tr>
+                        <tr>
+                            <td>ease</td>
+                            <td>Chậm – nhanh – chậm (mặc định)</td>
+                            <td>Hầu hết mọi trường hợp</td>
+                        </tr>
+                        <tr>
+                            <td>ease-in</td>
+                            <td>Bắt đầu chậm, kết thúc nhanh</td>
+                            <td>Phần tử biến mất</td>
+                        </tr>
+                        <tr>
+                            <td>ease-out</td>
+                            <td>Bắt đầu nhanh, kết thúc chậm</td>
+                            <td>Phần tử xuất hiện</td>
+                        </tr>
+                        <tr>
+                            <td>ease-in-out</td>
+                            <td>Chậm hai đầu, nhanh ở giữa</td>
+                            <td>Dời chỗ đoạn dài</td>
+                        </tr>
+                        <tr>
+                            <td>cubic-bezier(…)</td>
+                            <td>Tự định nghĩa, có thể nảy vượt mức</td>
+                            <td>Hiệu ứng nhấn nhá</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="meo"><b>Mẹo DevTools:</b> mở <code class="nho">F12 → Elements</code>, chọn phần tử, trong khung Styles bấm vào <b>biểu tượng đường cong</b> nằm cạnh giá trị <code class="nho">transition-timing-function</code> — Chrome mở sẵn công cụ kéo đường cong bezier để bạn chỉnh trực tiếp và xem trước.</div>
+            </section>
+
+            <!-- ===================== 4. TRANSFORM ===================== -->
+            <section class="muc">
+                <h2>4. Transform — biến đổi hình dạng</h2>
+                <p class="dan">Rê chuột vào từng ô. <code class="nho">transform</code> chỉ làm thay đổi <b>cách vẽ</b> phần tử, không ảnh hưởng đến vị trí các phần tử xung quanh.</p>
+
+                <div class="luoi-bien">
+                    <div class="o-bien b-translate">
+                        <div class="vuong">dời ngang</div>
+                        <code>translateX(28px)</code>
+                    </div>
+                    <div class="o-bien b-translate-y">
+                        <div class="vuong">dời lên</div>
+                        <code>translateY(-22px)</code>
+                    </div>
+                    <div class="o-bien b-rotate">
+                        <div class="vuong">xoay</div>
+                        <code>rotate(45deg)</code>
+                    </div>
+                    <div class="o-bien b-scale">
+                        <div class="vuong">phóng to</div>
+                        <code>scale(1.4)</code>
+                    </div>
+                    <div class="o-bien b-scale-nho">
+                        <div class="vuong">thu nhỏ</div>
+                        <code>scale(.65)</code>
+                    </div>
+                    <div class="o-bien b-skew">
+                        <div class="vuong">nghiêng</div>
+                        <code>skewX(-18deg)</code>
+                    </div>
+                    <div class="o-bien b-gop">
+                        <div class="vuong">gộp cả ba</div>
+                        <code>translateY(-12px) rotate(-8deg) scale(1.15)</code>
+                    </div>
+                </div>
+
+                <pre class="code"><span class="cm">/* Gộp nhiều phép biến đổi: viết liền nhau, cách bằng khoảng trắng */</span>
+<span class="pro">transform</span>: <span class="gt">translateY(-12px) rotate(-8deg) scale(1.15)</span>;
+
+<span class="cm">/* Thứ tự CÓ ảnh hưởng — đổi thứ tự sẽ ra kết quả khác */</span>
+<span class="pro">transform-origin</span>: <span class="gt">center</span>;   <span class="cm">/* tâm của phép biến đổi */</span></pre>
+            </section>
+
+            <!-- ===================== 5. VÍ DỤ THỰC TẾ ===================== -->
+            <section class="muc">
+                <h2>5. Ví dụ thực tế</h2>
+
+                <h3>Thẻ sản phẩm nhấc lên khi rê chuột</h3>
+                <div class="luoi-sp">
+                    <article class="the-sp">
+                        <div class="anh"><span>Laptop Pro 14</span></div>
+                        <div class="than">
+                            <h4>Laptop Pro 14</h4>
+                            <span class="gia">18.990.000 đ</span>
+                        </div>
+                    </article>
+                    <article class="the-sp">
+                        <div class="anh"><span>Bàn phím cơ</span></div>
+                        <div class="than">
+                            <h4>Bàn phím cơ</h4>
+                            <span class="gia">1.290.000 đ</span>
+                        </div>
+                    </article>
+                    <article class="the-sp">
+                        <div class="anh"><span>Màn hình 27"</span></div>
+                        <div class="than">
+                            <h4>Màn hình 27"</h4>
+                            <span class="gia">3.490.000 đ</span>
+                        </div>
+                    </article>
+                </div>
+
+                <pre class="code"><span class="tag">.the-sp</span>{
+  <span class="pro">transition</span>: <span class="gt">transform .3s ease, box-shadow .3s ease</span>;
+}
+<span class="tag">.the-sp:hover</span>{
+  <span class="pro">transform</span>: <span class="gt">translateY(-8px)</span>;                    <span class="cm">/* nhấc lên  */</span>
+  <span class="pro">box-shadow</span>: <span class="gt">0 14px 34px rgba(16,24,40,.18)</span>;   <span class="cm">/* bóng đậm  */</span>
+}
+<span class="cm">/* Ảnh bên trong phóng to, phần thừa bị .anh{overflow:hidden} cắt đi */</span>
+<span class="tag">.the-sp:hover .anh span</span>{ <span class="pro">transform</span>: <span class="gt">scale(1.18)</span>; }</pre>
+
+                <h3>Nút bấm</h3>
+                <button class="nut">Nút nhấc lên</button>
+                <button class="nut nut-day"><span>Nút đổ màu từ trái</span></button>
+
+                <h3>Menu gạch chân chạy từ giữa ra</h3>
+                <nav class="menu-gach">
+                    <a href="#">Trang chủ</a>
+                    <a href="#">Sản phẩm</a>
+                    <a href="#">Tin tức</a>
+                    <a href="#">Liên hệ</a>
+                </nav>
+            </section>
+
+            <!-- ===================== 6. MƯỢT VÀ GIẬT ===================== -->
+            <section class="muc">
+                <h2>6. Vì sao nên ưu tiên <code class="nho">transform</code> và <code class="nho">opacity</code>?</h2>
+                <p class="dan">Hai khối dưới đây cùng phóng to y hệt nhau. Khối bên trái đổi <code class="nho">width/height</code>, khối bên phải dùng <code class="nho">transform: scale()</code>. Trên máy yếu hoặc điện thoại, khối bên trái sẽ giật rõ rệt.</p>
+
+                <div class="so-sanh-muot">
+                    <div class="o-muot giat">
+                        <b>Đổi width / height</b>
+                        <div class="khoi"></div>
+                        <small>Trình duyệt phải tính lại bố cục cả trang mỗi khung hình</small>
+                    </div>
+                    <div class="o-muot muot">
+                        <b>Dùng transform: scale()</b>
+                        <div class="khoi"></div>
+                        <small>Card đồ họa xử lý riêng, không đụng tới bố cục</small>
+                    </div>
+                </div>
+
+                <div class="luuy"><b>Quy tắc:</b> chỉ nên chuyển động <code class="nho">transform</code> và <code class="nho">opacity</code>. Tránh chuyển động <code class="nho">width</code>, <code class="nho">height</code>, <code class="nho">top</code>, <code class="nho">left</code>, <code class="nho">margin</code> vì chúng buộc trình duyệt tính lại bố cục liên tục.</div>
+
+                <div class="meo">
+                    <b>Tôn trọng người dùng:</b> ai bật chế độ giảm chuyển động trong hệ điều hành (do dễ chóng mặt) thì nên tắt hiệu ứng cho họ:
+                    <pre class="code"><span class="tag">@media</span> (prefers-reduced-motion: reduce){
+  <span class="tag">*</span>{ <span class="pro">transition</span>:<span class="gt">none</span> !important; <span class="pro">animation</span>:<span class="gt">none</span> !important; }
+}</pre>
+                </div>
+            </section>
+
+            <section class="muc">
+                <h2>Bài tập tại lớp</h2>
+                <ol>
+                    <li>Đổi <code class="nho">transition: transform .3s</code> của thẻ sản phẩm thành <code class="nho">2s</code> và nhận xét cảm giác sử dụng.</li>
+                    <li>Làm nút bấm khi rê chuột thì <b>vừa đổi màu vừa xoay nhẹ 3 độ</b>.</li>
+                    <li>Làm menu gạch chân chạy <b>từ trái sang phải</b> thay vì từ giữa ra.</li>
+                    <li>Thêm một ô transform mới dùng <code class="nho">rotate(-360deg)</code> chạy trong 1 giây.</li>
+                </ol>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="wrap">
+                <p>&copy; 2026 — Đại học Lạc Hồng · Demo Chương 4, phần 3: CSS Transition</p>
+            </div>
+        </footer>
+    </body>
+</html>

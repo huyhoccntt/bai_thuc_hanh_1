@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Demo Themes</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+        <style>
+            :root {
+                --page-bg: #f5f7fb;
+                --surface: #ffffff;
+                --text: #1e293b;
+                --muted-text: #64748b;
+                --border: #dbe3ef;
+                --shadow: 0 8px 24px rgba(30, 41, 59, 0.1);
+                --radius: 10px;
+                --space: 20px;
+                --bg-product: rgb(151, 151, 246);
+                --title-product: rgb(0, 0, 163);
+                --button-text: #ffffff;
+                --button-bg: rgb(30, 30, 124);
+                --theme-bg: #ffff;
+                --theme-text: #000000;
+            }
+
+            body:has(#mau-cam:checked) {
+                --bg-product: rgb(248, 203, 125);
+                --title-product: rgb(216, 148, 0);
+                --button-bg: rgb(171, 99, 23);
+            }
+
+            body:has(#mau-tim:checked) {
+                --bg-product: rgb(202, 124, 236);
+                --title-product: rgb(95, 0, 122);
+                --button-bg: rgb(122, 0, 159);
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            @keyframes animationshowproduct {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            body {
+                margin: 0;
+                padding: 32px;
+                background: var(--page-bg);
+                color: var(--text);
+                font: 16px/1.5 Arial, sans-serif;
+            }
+
+            .d-flex {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 12px 15px;
+                max-width: 1100px;
+                margin: 0 auto 28px;
+            }
+
+            .d-flex h3 {
+                width: 100%;
+                margin: 0;
+                color: var(--title-product);
+            }
+
+            label {
+                cursor: pointer;
+                color: var(--muted-text);
+            }
+
+            input {
+                accent-color: var(--button-bg);
+            }
+
+            body > div:last-child {
+                max-width: 1100px;
+                margin: 0 auto;
+            }
+
+            body > div:last-child > h3 {
+                margin: 0 0 16px;
+                color: var(--text);
+            }
+
+            .products {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: var(--space);
+            }
+
+            .product {
+                min-width: 0;
+                border: 1px solid black;
+                padding: 20px;
+                border-radius: var(--radius);
+                background-color: var(--bg-product);
+                box-shadow: var(--shadow);
+                transition: background-color 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease;
+                animation: animationshowproduct 0.7s ease both;
+            }
+
+            .product:nth-child(2) {
+                animation-delay: 0.15s;
+            }
+
+            .product:nth-child(3) {
+                animation-delay: 0.3s;
+            }
+
+            .product:hover {
+                transform: translateY(-6px);
+                box-shadow: 0 14px 30px rgba(30, 41, 59, 0.16);
+            }
+
+            .product img {
+                display: block;
+                width: 100%;
+                height: auto;
+                border-radius: 6px;
+            }
+
+            .button {
+                padding: 10px;
+                border: 0;
+                border-radius: 5px;
+                color: var(--button-text);
+                background-color: var(--button-bg);
+                cursor: pointer;
+                transition: background-color 0.3s ease, transform 0.3s ease;
+            }
+
+            .button:hover {
+                transform: translateY(-2px);
+                filter: brightness(1.1);
+            }
+
+            .title {
+                color: var(--title-product);
+            }
+
+            @media (max-width: 1023px) {
+                body {
+                    padding: 24px;
+                }
+
+                .products {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+            }
+
+            @media (max-width: 767px) {
+                body {
+                    padding: 16px;
+                }
+
+                .d-flex {
+                    align-items: flex-start;
+                    margin-bottom: 22px;
+                }
+
+                .d-flex label {
+                    width: 100%;
+                }
+
+                .products {
+                    grid-template-columns: 1fr;
+                }
+
+                .product {
+                    padding: 16px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="d-flex">
+            <h3>Chọn chủ đề màu sắc của bạn:</h3>
+            <label> <input id="mau-xanh-duong" type="radio" name="color" checked /> Màu xanh dương </label>
+            <label> <input id="mau-cam" type="radio" name="color" /> Màu cam </label>
+            <label> <input id="mau-tim" type="radio" name="color" /> Màu tím </label>
+        </div>
+        <div>
+            <h3>Danh sách sản phẩm:</h3>
+            <div class="products">
+            <div class="product">
+                <img src="1.webp" width="100%" height="auto" />
+                <h4 class="title">iPhone 18 Pro Max</h4>
+                <p>40.000.000đ</p>
+                <button class="button">Đặt ngay</button>
+            </div>
+           
+
+            <div class="product animate__animated animate__fadeIn">
+                <img src="2..webp" width="100%" height="auto" />
+                <h4 class="title">iPhone 18 Pro Max</h4>
+                <p>40.000.000đ</p>
+                <button class="button">Đặt ngay</button>
+            </div>
+            
+
+            <div class="product animate__animated animate__pulse">
+                <img src="3..JPG" width="100%" height="auto" />
+                <h4 class="title">iPhone 18 Pro Max</h4>
+                <p>40.000.000đ</p>
+                <button class="button">Đặt ngay</button>
+            </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Themes</title>
+        <style>
+            :root {
+                --title-color: blue;
+                --text-color: #000;
+                --bg-color: rgb(161, 161, 255);
+                --btn-bg: rgb(37, 37, 148);
+                --btn-color: #fff;
+            }
+
+            body:has(#cam-theme:checked) {
+                --title-color: rgb(243, 114, 0);
+                --bg-color: rgb(255, 238, 187);
+                --btn-bg: rgb(255, 174, 0);
+            }
+
+            body:has(#tim-theme:checked) {
+                --title-color: rgb(144, 0, 255);
+                --bg-color: rgb(239, 187, 255);
+                --btn-bg: rgb(148, 38, 158);
+            }
+
+            .d-flex {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .product-card {
+                border: 1px solid;
+                padding: 15px;
+                border-radius: 5px;
+                width: 250px;
+            }
+
+            .title {
+                color: var(--title-color);
+            }
+
+            .text {
+                color: var(--text-color);
+            }
+
+            .background {
+                background-color: var(--bg-color);
+            }
+
+            .button {
+                background-color: var(--btn-bg);
+                color: var(--btn-color);
+                padding: 5px;
+                border-radius: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="d-flex">
+            <h3>Chọn màu:</h3>
+            <label>
+                <input type="radio" name="theme" id="xanh-theme" checked />
+                Màu xanh
+            </label>
+            <label>
+                <input type="radio" name="theme" id="cam-theme" />
+                Màu cam
+            </label>
+            <label>
+                <input type="radio" name="theme" id="tim-theme" />
+                Màu tím
+            </label>
+            <label>
+                <input type="checkbox" id="dark-mode" />
+                Chế độ tối
+            </label>
+        </div>
+        <h3>Danh sách sản phẩm</h3>
+        <div class="d-flex">
+            <div class="product-card background">
+                <img src="../img/images.jpeg" width="100%" height="auto" />
+                <h4 class="title">iPhone 18 Promax</h4>
+                <p class="text">35.000.000đ</p>
+                <button class="button">Đặt ngay</button>
+            </div>
+        </div>
+    </body>
+</html>

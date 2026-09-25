@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Demo Themes</title>
+        <style>
+            :root {
+                --bg-product: rgb(151, 151, 246);
+                --title-product: rgb(0, 0, 163);
+                --button-text: #ffffff;
+                --button-bg: rgb(30, 30, 124);
+            }
+
+            body:has(#mau-cam:checked) {
+                --bg-product: rgb(248, 203, 125);
+                --title-product: rgb(216, 148, 0);
+                --button-bg: rgb(171, 99, 23);
+            }
+
+            body:has(#mau-tim:checked) {
+                --bg-product: rgb(202, 124, 236);
+                --title-product: rgb(95, 0, 122);
+                --button-bg: rgb(122, 0, 159);
+            }
+
+            .d-flex {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .product {
+                width: 200px;
+                border: 1px solid black;
+                padding: 20px;
+                border-radius: 5px;
+                background-color: var(--bg-product);
+            }
+
+            .button {
+                padding: 10px;
+                border-radius: 5px;
+                color: var(--button-text);
+                background-color: var(--button-bg);
+            }
+
+            .title {
+                color: var(--title-product);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="d-flex">
+            <h3>Chọn chủ đề màu sắc của bạn:</h3>
+            <label> <input id="mau-xanh-duong" type="radio" name="color" checked /> Màu xanh dương </label>
+            <label> <input id="mau-cam" type="radio" name="color" /> Màu cam </label>
+            <label> <input id="mau-tim" type="radio" name="color" /> Màu tím </label>
+        </div>
+        <div>
+            <h3>Danh sách sản phẩm:</h3>
+            <div class="product">
+                <img src="img/images.jpeg" width="100%" height="auto" />
+                <h4 class="title">iPhone 18 Pro Max</h4>
+                <p>40.000.000đ</p>
+                <button class="button">Đặt ngay</button>
+            </div>
+        </div>
+    </body>
+</html>

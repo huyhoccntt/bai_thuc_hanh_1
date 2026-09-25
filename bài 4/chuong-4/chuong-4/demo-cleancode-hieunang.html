@@ -1,0 +1,962 @@
+<!doctype html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Demo 6 — Clean Code, DevTools và tối ưu hiệu năng | Thiết kế Web</title>
+        <meta name="description" content="Trang demo cách viết mã sạch, kiểm tra chuẩn W3C, đọc Console trong DevTools và tối ưu tốc độ tải trang." />
+        <style>
+            :root {
+                --chinh: #1f509e;
+                --chinh-dam: #163c77;
+                --chinh-nhat: #eaf0fb;
+                --phu: #e6a811;
+                --nen: #f6f7f9;
+                --the: #ffffff;
+                --chu: #1b1f27;
+                --chu-mo: #5c626e;
+                --vien: #e1e7f0;
+                --bo-goc: 10px;
+                --tot: #1e8e3e;
+                --xau: #c5221f;
+                --bong: 0 1px 2px rgba(16, 24, 40, 0.05), 0 6px 18px rgba(16, 24, 40, 0.06);
+            }
+            /* ====== Bộ khung dùng chung cho các file demo — Chương 4 ====== */
+            * {
+                box-sizing: border-box;
+            }
+            body {
+                margin: 0;
+                background: var(--nen);
+                color: var(--chu);
+                font:
+                    16px/1.6 Arial,
+                    "Helvetica Neue",
+                    Helvetica,
+                    sans-serif;
+            }
+            img {
+                max-width: 100%;
+                display: block;
+            }
+            a {
+                color: var(--chinh);
+            }
+            h1,
+            h2,
+            h3,
+            h4 {
+                line-height: 1.25;
+                margin: 0 0 10px;
+            }
+            .wrap {
+                max-width: 1080px;
+                margin: 0 auto;
+                padding: 0 20px;
+            }
+
+            /* ---- Thanh công cụ của bài demo (không thuộc nội dung bài học) ---- */
+            .demo-bar {
+                position: sticky;
+                top: 0;
+                z-index: 99;
+                background: #16181d;
+                color: #fff;
+                padding: 10px 20px;
+                font-size: 14px;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .demo-bar b {
+                color: #e6a811;
+            }
+            .demo-bar label {
+                display: flex;
+                gap: 8px;
+                align-items: center;
+                cursor: pointer;
+                background: #2f3542;
+                padding: 7px 13px;
+                border-radius: 8px;
+                white-space: nowrap;
+            }
+            .demo-bar input {
+                accent-color: #e6a811;
+                width: 16px;
+                height: 16px;
+            }
+
+            /* ---- Tiêu đề trang ---- */
+            .site-header {
+                background: var(--the);
+                border-bottom: 1px solid var(--vien);
+                padding: 22px 0;
+            }
+            .site-header h1 {
+                font-size: 26px;
+                color: var(--chinh);
+                margin: 0;
+            }
+            .site-header p {
+                margin: 4px 0 0;
+                color: var(--chu-mo);
+                font-size: 14px;
+            }
+
+            /* ---- Mỗi mục bài học ---- */
+            main {
+                max-width: 1080px;
+                margin: 0 auto;
+                padding: 26px 20px;
+            }
+            section.muc {
+                background: var(--the);
+                border: 1px solid var(--vien);
+                border-radius: var(--bo-goc);
+                box-shadow: var(--bong);
+                padding: 22px 26px;
+                margin-bottom: 24px;
+            }
+            section.muc > h2 {
+                font-size: 22px;
+                color: var(--chinh);
+                border-bottom: 2px solid var(--vien);
+                padding-bottom: 10px;
+            }
+            section.muc h3 {
+                font-size: 17px;
+                color: var(--chinh);
+                margin-top: 22px;
+            }
+            .dan {
+                color: var(--chu-mo);
+                font-size: 15px;
+                margin-top: 0;
+            }
+
+            /* ---- Khung code ---- */
+            pre.code {
+                background: #f3f6fb;
+                border: 1px solid #c9d6ea;
+                border-radius: 8px;
+                padding: 14px 16px;
+                overflow-x: auto;
+                margin: 10px 0 0;
+                font:
+                    14px/1.65 Consolas,
+                    "Courier New",
+                    monospace;
+                color: #1b1f27;
+                white-space: pre;
+            }
+            pre.code .tag {
+                color: #0051c2;
+            }
+            pre.code .pro {
+                color: #7030a0;
+            }
+            pre.code .gt {
+                color: #008000;
+            }
+            pre.code .cm {
+                color: #6e7687;
+                font-style: italic;
+            }
+            code.nho {
+                background: #edf1f8;
+                border: 1px solid #d8e1ee;
+                border-radius: 4px;
+                padding: 1px 6px;
+                font:
+                    14px Consolas,
+                    "Courier New",
+                    monospace;
+                color: #0051c2;
+            }
+
+            /* ---- Bảng ---- */
+            table.bang {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 15px;
+                margin-top: 10px;
+            }
+            table.bang th,
+            table.bang td {
+                border: 1px solid var(--vien);
+                padding: 9px 12px;
+                text-align: left;
+                vertical-align: top;
+            }
+            table.bang thead th {
+                background: var(--chinh);
+                color: #fff;
+            }
+            table.bang tbody tr:nth-child(even) {
+                background: rgba(31, 80, 158, 0.04);
+            }
+            table.bang td:first-child {
+                font-family: Consolas, "Courier New", monospace;
+                color: #0051c2;
+            }
+
+            /* ---- Ghi chú ---- */
+            .luuy {
+                background: #fff7e6;
+                border-left: 4px solid #e6a811;
+                border-radius: 0 8px 8px 0;
+                padding: 12px 16px;
+                margin-top: 16px;
+                font-size: 15px;
+            }
+            .meo {
+                background: rgba(31, 80, 158, 0.07);
+                border-left: 4px solid var(--chinh);
+                border-radius: 0 8px 8px 0;
+                padding: 12px 16px;
+                margin-top: 16px;
+                font-size: 15px;
+            }
+
+            .site-footer {
+                background: #1b1f27;
+                color: #c9cfda;
+                padding: 24px 0;
+                margin-top: 10px;
+                font-size: 14px;
+            }
+            .site-footer a {
+                color: #fff;
+            }
+
+            /* --- Hai cột so sánh "chưa tốt" và "nên viết" --- */
+            .so-sanh {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 16px;
+                margin-top: 14px;
+            }
+            @media (min-width: 900px) {
+                .so-sanh {
+                    grid-template-columns: 1fr 1fr;
+                }
+            }
+            .cot {
+                border-radius: var(--bo-goc);
+                overflow: hidden;
+                border: 1px solid var(--vien);
+            }
+            .cot > h4 {
+                margin: 0;
+                padding: 10px 16px;
+                font-size: 15px;
+                color: #fff;
+            }
+            .cot.xau > h4 {
+                background: var(--xau);
+            }
+            .cot.tot > h4 {
+                background: var(--tot);
+            }
+            .cot pre.code {
+                margin: 0;
+                border: none;
+                border-radius: 0;
+                background: #f8fafd;
+            }
+
+            /* --- Bảng nút thử Console --- */
+            .hang-nut {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-top: 14px;
+            }
+            .nut {
+                padding: 10px 18px;
+                border: 1px solid var(--chinh);
+                background: var(--the);
+                color: var(--chinh);
+                border-radius: 8px;
+                font-weight: bold;
+                cursor: pointer;
+                font-family: inherit;
+                font-size: 15px;
+                transition: background 0.2s;
+            }
+            .nut:hover {
+                background: var(--chinh-nhat);
+            }
+            .nut.canh-bao {
+                border-color: var(--phu);
+                color: #8a5a06;
+            }
+            .nut.canh-bao:hover {
+                background: #fdf3e2;
+            }
+            .nut.loi {
+                border-color: var(--xau);
+                color: var(--xau);
+            }
+            .nut.loi:hover {
+                background: #fdecea;
+            }
+
+            /* --- Bảng điểm Lighthouse giả lập --- */
+            .diem-lh {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+                gap: 14px;
+                margin-top: 14px;
+            }
+            .vong {
+                background: var(--the);
+                border: 1px solid var(--vien);
+                border-radius: var(--bo-goc);
+                padding: 16px;
+                text-align: center;
+            }
+            .vong .so {
+                width: 74px;
+                height: 74px;
+                margin: 0 auto 10px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 24px;
+                font-weight: bold;
+                color: #fff;
+            }
+            .vong .so.xanh {
+                background: var(--tot);
+            }
+            .vong .so.cam {
+                background: #e8710a;
+            }
+            .vong .so.do {
+                background: var(--xau);
+            }
+            .vong small {
+                color: var(--chu-mo);
+                font-size: 13px;
+            }
+
+            /* --- Ảnh so sánh dung lượng --- */
+            .anh-ss {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 16px;
+                margin-top: 14px;
+            }
+            .anh-ss figure {
+                background: var(--the);
+                border: 1px solid var(--vien);
+                border-radius: var(--bo-goc);
+                padding: 14px;
+                margin: 0;
+                text-align: center;
+            }
+            .anh-ss .khoi {
+                height: 80px;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #fff;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+            .anh-ss figcaption {
+                font-size: 13px;
+                color: var(--chu-mo);
+                font-style: normal;
+            }
+            .anh-ss b {
+                display: block;
+                font-size: 18px;
+                margin-bottom: 2px;
+            }
+
+            ul.kiem {
+                list-style: none;
+                padding: 0;
+                margin-top: 12px;
+            }
+            ul.kiem li {
+                padding: 9px 0 9px 32px;
+                border-bottom: 1px solid var(--vien);
+                position: relative;
+                font-size: 15px;
+            }
+            ul.kiem li::before {
+                content: "✔";
+                position: absolute;
+                left: 6px;
+                color: var(--tot);
+                font-weight: bold;
+            }
+            ul.kiem li:last-child {
+                border-bottom: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="demo-bar">
+            <span><b>Demo 6 — Clean Code &amp; Hiệu năng</b> · hãy mở <b>F12</b> trước khi xem trang này</span>
+            <span>Mở tab <b>Console</b> để thấy các thông báo</span>
+        </div>
+
+        <header class="site-header">
+            <div class="wrap">
+                <h1>Clean Code, DevTools và tối ưu hiệu năng</h1>
+                <p>Demo thực hành — Chương 4, phần 5 và 6</p>
+            </div>
+        </header>
+
+        <main>
+            <!-- ===================== 1. CLEAN CODE HTML ===================== -->
+            <section class="muc">
+                <h2>1. Clean Code HTML</h2>
+
+                <div class="so-sanh">
+                    <div class="cot xau">
+                        <h4>✗ Chưa tốt</h4>
+                        <pre class="code"><span class="tag">&lt;DIV</span> <span class="pro">class</span>=<span class="gt">"Div1"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;div</span> <span class="pro">class</span>=<span class="gt">"div2"</span><span class="tag">&gt;</span><span class="tag">&lt;b&gt;</span>Tin mới<span class="tag">&lt;/b&gt;</span>
+<span class="tag">&lt;div&gt;</span>Nội dung bài viết
+<span class="tag">&lt;img</span> <span class="pro">src</span>=<span class="gt">"IMG_2481.JPG"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;div</span> <span class="pro">style</span>=<span class="gt">"color:red;font-size:20px"</span><span class="tag">&gt;</span>Xem thêm<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/DIV&gt;</span></pre>
+                    </div>
+
+                    <div class="cot tot">
+                        <h4>✓ Nên viết</h4>
+                        <pre class="code"><span class="tag">&lt;article</span> <span class="pro">class</span>=<span class="gt">"bai-viet"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;h2&gt;</span>Tin mới<span class="tag">&lt;/h2&gt;</span>
+  <span class="tag">&lt;p&gt;</span>Nội dung bài viết<span class="tag">&lt;/p&gt;</span>
+  <span class="tag">&lt;img</span> <span class="pro">src</span>=<span class="gt">"laptop-sinh-vien.webp"</span>
+       <span class="pro">alt</span>=<span class="gt">"Laptop cho sinh viên CNTT"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;a</span> <span class="pro">class</span>=<span class="gt">"nut-xem-them"</span> <span class="pro">href</span>=<span class="gt">"/tin-moi"</span><span class="tag">&gt;</span>Xem thêm<span class="tag">&lt;/a&gt;</span>
+<span class="tag">&lt;/article&gt;</span></pre>
+                    </div>
+                </div>
+
+                <table class="bang">
+                    <thead>
+                        <tr>
+                            <th>Quy tắc</th>
+                            <th>Vì sao</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Thẻ và thuộc tính viết thường</td>
+                            <td>HTML5 khuyến nghị, nhìn nhất quán</td>
+                        </tr>
+                        <tr>
+                            <td>Thụt lề 2 khoảng trắng cho mỗi cấp</td>
+                            <td>Nhìn ra ngay cấu trúc lồng nhau</td>
+                        </tr>
+                        <tr>
+                            <td>Dùng thẻ ngữ nghĩa thay <code>div</code></td>
+                            <td>Tốt cho SEO và trình đọc màn hình</td>
+                        </tr>
+                        <tr>
+                            <td>Đặt tên class có nghĩa, không dấu, dùng gạch ngang</td>
+                            <td><code>.bai-viet</code> chứ không phải <code>.div2</code></td>
+                        </tr>
+                        <tr>
+                            <td>Luôn đóng thẻ, luôn có <code>alt</code> cho ảnh</td>
+                            <td>Tránh lỗi hiển thị và lỗi chuẩn W3C</td>
+                        </tr>
+                        <tr>
+                            <td>Không viết <code>style=""</code> trực tiếp trong thẻ</td>
+                            <td>CSS phải nằm ở file riêng để còn dùng lại</td>
+                        </tr>
+                        <tr>
+                            <td>Thêm chú thích cho các khối lớn</td>
+                            <td>Mai mốt quay lại còn hiểu mình đã viết gì</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- ===================== 2. CLEAN CODE CSS ===================== -->
+            <section class="muc">
+                <h2>2. Clean Code CSS</h2>
+
+                <div class="so-sanh">
+                    <div class="cot xau">
+                        <h4>✗ Chưa tốt</h4>
+                        <pre class="code"><span class="tag">.a</span>{<span class="pro">color</span>:<span class="gt">#1F509E</span>;<span class="pro">margin-top</span>:<span class="gt">10px</span>}
+<span class="tag">div div div span a</span>{<span class="pro">color</span>:<span class="gt">#1F509E</span> !important}
+<span class="tag">.b</span>{<span class="pro">color</span>:<span class="gt">#1F509E</span>}
+<span class="tag">.c</span>{<span class="pro">color</span>:<span class="gt">#1f509e</span>}
+<span class="tag">.a</span>{<span class="pro">margin-top</span>:<span class="gt">14px</span>}  <span class="cm">/* trùng, viết hai nơi */</span></pre>
+                    </div>
+
+                    <div class="cot tot">
+                        <h4>✓ Nên viết</h4>
+                        <pre class="code"><span class="cm">/* ===== Bài viết ===== */</span>
+<span class="tag">.bai-viet</span>{
+  <span class="pro">color</span>: <span class="gt">var(--chinh)</span>;
+  <span class="pro">margin-top</span>: <span class="gt">var(--cach-3)</span>;
+}
+<span class="tag">.bai-viet__lien-ket</span>{
+  <span class="pro">color</span>: <span class="gt">var(--chinh)</span>;
+}</pre>
+                    </div>
+                </div>
+
+                <table class="bang">
+                    <thead>
+                        <tr>
+                            <th>Quy tắc</th>
+                            <th>Vì sao</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Nhóm CSS theo từng khối, có chú thích tiêu đề</td>
+                            <td>Tìm lại nhanh trong file dài</td>
+                        </tr>
+                        <tr>
+                            <td>Dùng biến CSS thay vì lặp mã màu</td>
+                            <td>Đổi một chỗ, cả trang đổi theo</td>
+                        </tr>
+                        <tr>
+                            <td>Tránh bộ chọn quá sâu (<code>div div div span</code>)</td>
+                            <td>Khó ghi đè, chạy chậm, dễ gãy khi sửa HTML</td>
+                        </tr>
+                        <tr>
+                            <td>Hạn chế tối đa <code>!important</code></td>
+                            <td>Là dấu hiệu CSS đã rối, sẽ càng khó sửa về sau</td>
+                        </tr>
+                        <tr>
+                            <td>Xóa mã không dùng nữa</td>
+                            <td>File nhẹ đi, người sau đọc không bị rối</td>
+                        </tr>
+                        <tr>
+                            <td>Mỗi thuộc tính một dòng, có khoảng trắng sau dấu hai chấm</td>
+                            <td>Dễ đọc và dễ so sánh khi làm nhóm</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- ===================== 3. W3C VALIDATION ===================== -->
+            <section class="muc">
+                <h2>3. Kiểm tra chuẩn W3C</h2>
+                <p class="dan">Công cụ miễn phí của tổ chức W3C, chấm xem mã HTML/CSS của bạn có đúng chuẩn không.</p>
+
+                <table class="bang">
+                    <thead>
+                        <tr>
+                            <th>Công cụ</th>
+                            <th>Địa chỉ</th>
+                            <th>Kiểm tra</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>HTML Validator</td>
+                            <td><a href="https://validator.w3.org" target="_blank" rel="noopener">validator.w3.org</a></td>
+                            <td>Cú pháp HTML</td>
+                        </tr>
+                        <tr>
+                            <td>CSS Validator</td>
+                            <td><a href="https://jigsaw.w3.org/css-validator" target="_blank" rel="noopener">jigsaw.w3.org/css-validator</a></td>
+                            <td>Cú pháp CSS</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Ba cách nộp bài để kiểm tra</h3>
+                <ul class="kiem">
+                    <li><b>Validate by URI</b> — dán địa chỉ trang đã đưa lên mạng</li>
+                    <li><b>Validate by File Upload</b> — tải file <code class="nho">.html</code> từ máy lên</li>
+                    <li><b>Validate by Direct Input</b> — dán thẳng mã vào ô (tiện nhất khi làm bài tập)</li>
+                </ul>
+
+                <h3>Các lỗi sinh viên hay gặp nhất</h3>
+                <table class="bang">
+                    <thead>
+                        <tr>
+                            <th>Thông báo</th>
+                            <th>Nghĩa là</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>An img element must have an alt attribute</td>
+                            <td>Thẻ <code>&lt;img&gt;</code> thiếu <code>alt</code></td>
+                        </tr>
+                        <tr>
+                            <td>End tag for "div" seen, but there were open elements</td>
+                            <td>Quên đóng một thẻ nào đó bên trong</td>
+                        </tr>
+                        <tr>
+                            <td>Duplicate ID "x"</td>
+                            <td>Hai thẻ dùng trùng một <code>id</code> — <code>id</code> phải duy nhất</td>
+                        </tr>
+                        <tr>
+                            <td>Element "h1" not allowed as child of element "ul"</td>
+                            <td>Đặt thẻ sai chỗ, <code>&lt;ul&gt;</code> chỉ chứa <code>&lt;li&gt;</code></td>
+                        </tr>
+                        <tr>
+                            <td>Stray end tag "p"</td>
+                            <td>Có thẻ đóng <code>&lt;/p&gt;</code> mà không có thẻ mở</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="meo"><b>Phân biệt:</b> dòng đỏ <b>Error</b> là lỗi phải sửa. Dòng vàng <b>Warning</b> chỉ là gợi ý, không bắt buộc. Mục tiêu của bài tập: <b>0 Error</b>.</div>
+            </section>
+
+            <!-- ===================== 4. CONSOLE ===================== -->
+            <section class="muc">
+                <h2>4. Console trong DevTools</h2>
+                <p class="dan">Mở <code class="nho">F12 → Console</code> rồi bấm các nút dưới đây. Mỗi nút in ra một kiểu thông báo khác nhau để bạn nhận mặt.</p>
+
+                <div class="hang-nut">
+                    <button class="nut" data-loai="log">console.log — thông tin</button>
+                    <button class="nut" data-loai="info">console.info — ghi chú</button>
+                    <button class="nut canh-bao" data-loai="warn">console.warn — cảnh báo (vàng)</button>
+                    <button class="nut loi" data-loai="error">console.error — lỗi (đỏ)</button>
+                    <button class="nut" data-loai="table">console.table — in bảng</button>
+                    <button class="nut" data-loai="count">console.count — đếm số lần bấm</button>
+                    <button class="nut loi" data-loai="nem">Gây một lỗi thật (uncaught)</button>
+                </div>
+
+                <table class="bang">
+                    <thead>
+                        <tr>
+                            <th>Ký hiệu</th>
+                            <th>Mức độ</th>
+                            <th>Phải làm gì</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Chữ đen</td>
+                            <td>Thông tin do mình tự in ra</td>
+                            <td>Chỉ để theo dõi</td>
+                        </tr>
+                        <tr>
+                            <td>Nền vàng ⚠</td>
+                            <td>Cảnh báo</td>
+                            <td>Nên xem lại, chưa gây hỏng trang</td>
+                        </tr>
+                        <tr>
+                            <td>Nền đỏ ✖</td>
+                            <td>Lỗi</td>
+                            <td><b>Phải sửa</b> — có thứ đang không chạy</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Các lỗi thường gặp trên Console</h3>
+                <table class="bang">
+                    <thead>
+                        <tr>
+                            <th>Thông báo</th>
+                            <th>Nguyên nhân</th>
+                            <th>Cách sửa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>404 (Not Found)</td>
+                            <td>Sai đường dẫn file CSS, ảnh hoặc JS</td>
+                            <td>Kiểm tra lại tên file và thư mục, chú ý chữ hoa chữ thường</td>
+                        </tr>
+                        <tr>
+                            <td>Failed to load resource</td>
+                            <td>File không tồn tại hoặc không được nộp kèm</td>
+                            <td>Xem tab <b>Network</b>, dòng nào màu đỏ là file đó hỏng</td>
+                        </tr>
+                        <tr>
+                            <td>Uncaught ReferenceError: x is not defined</td>
+                            <td>Dùng một biến chưa khai báo</td>
+                            <td>Kiểm tra chính tả tên biến</td>
+                        </tr>
+                        <tr>
+                            <td>Uncaught TypeError: Cannot read properties of null</td>
+                            <td>Không tìm thấy phần tử trong HTML</td>
+                            <td>Sai <code>id</code>, hoặc thẻ <code>&lt;script&gt;</code> chạy trước khi HTML kịp tải</td>
+                        </tr>
+                        <tr>
+                            <td>Mixed Content</td>
+                            <td>Trang https nhưng nhúng tài nguyên http</td>
+                            <td>Đổi đường dẫn sang <code>https</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="luuy"><b>Ngay lúc này:</b> trang demo này cố tình nhúng một ảnh không tồn tại (<code class="nho">anh-khong-ton-tai.jpg</code>) ở ngay dưới đây. Mở <code class="nho">F12 → Console</code>, bạn sẽ thấy dòng đỏ <b>404 (Not Found)</b>. Đây chính là lỗi mà rất nhiều bạn gặp khi file CSS không hiện.</div>
+                <img src="anh-khong-ton-tai.jpg" alt="Ảnh cố tình đặt sai đường dẫn để minh họa lỗi 404" width="240" height="90" style="border: 2px dashed var(--xau); border-radius: 8px; padding: 10px; margin-top: 12px" />
+
+                <h3>Vài lệnh DevTools nên biết</h3>
+                <table class="bang">
+                    <thead>
+                        <tr>
+                            <th>Thao tác</th>
+                            <th>Tác dụng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>F12 / Ctrl + Shift + I</td>
+                            <td>Mở DevTools</td>
+                        </tr>
+                        <tr>
+                            <td>Ctrl + Shift + C</td>
+                            <td>Bấm chọn phần tử trên trang để xem mã</td>
+                        </tr>
+                        <tr>
+                            <td>Ctrl + Shift + M</td>
+                            <td>Chế độ xem điện thoại</td>
+                        </tr>
+                        <tr>
+                            <td>Ctrl + F5</td>
+                            <td>Tải lại và bỏ qua bộ nhớ đệm (khi sửa CSS mà không thấy đổi)</td>
+                        </tr>
+                        <tr>
+                            <td>Tab Network</td>
+                            <td>Xem từng file tải về: nặng bao nhiêu, mất bao lâu, có lỗi không</td>
+                        </tr>
+                        <tr>
+                            <td>Tab Elements → Styles</td>
+                            <td>Sửa CSS trực tiếp để thử nghiệm (tải lại trang là mất)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- ===================== 5. TỐI ƯU HÌNH ẢNH ===================== -->
+            <section class="muc">
+                <h2>5. Tối ưu hình ảnh</h2>
+                <p class="dan">Hình ảnh thường chiếm <b>60 – 70% dung lượng</b> một trang web. Đây là chỗ tối ưu được nhiều nhất mà lại dễ làm nhất.</p>
+
+                <div class="anh-ss">
+                    <figure>
+                        <div class="khoi" style="background: var(--xau)">JPG gốc</div>
+                        <figcaption><b>4.200 KB</b>Ảnh chụp 4000×3000 từ điện thoại, đưa thẳng lên web</figcaption>
+                    </figure>
+                    <figure>
+                        <div class="khoi" style="background: #e8710a">JPG đã thu nhỏ</div>
+                        <figcaption><b>280 KB</b>Thu về 1200×900, nén chất lượng 80%</figcaption>
+                    </figure>
+                    <figure>
+                        <div class="khoi" style="background: var(--tot)">WebP</div>
+                        <figcaption><b>95 KB</b>Cùng kích thước, nhẹ hơn khoảng 30% so với JPG</figcaption>
+                    </figure>
+                </div>
+
+                <table class="bang">
+                    <thead>
+                        <tr>
+                            <th>Định dạng</th>
+                            <th>Dùng cho</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>WebP</td>
+                            <td><b>Ưu tiên dùng</b> — nhẹ nhất, mọi trình duyệt đời mới đều đọc được</td>
+                        </tr>
+                        <tr>
+                            <td>JPG</td>
+                            <td>Ảnh chụp nhiều màu</td>
+                        </tr>
+                        <tr>
+                            <td>PNG</td>
+                            <td>Ảnh cần nền trong suốt, ảnh chụp màn hình</td>
+                        </tr>
+                        <tr>
+                            <td>SVG</td>
+                            <td>Logo, biểu tượng — phóng to bao nhiêu cũng nét, dung lượng rất nhẹ</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <pre class="code"><span class="cm">&lt;!-- loading="lazy": chỉ tải khi người dùng cuộn tới --&gt;</span>
+<span class="cm">&lt;!-- width + height: giữ chỗ sẵn, trang không bị "nhảy" khi ảnh tải xong --&gt;</span>
+<span class="tag">&lt;img</span> <span class="pro">src</span>=<span class="gt">"laptop-sinh-vien.webp"</span>
+     <span class="pro">alt</span>=<span class="gt">"Laptop cho sinh viên CNTT"</span>
+     <span class="pro">width</span>=<span class="gt">"800"</span> <span class="pro">height</span>=<span class="gt">"450"</span>
+     <span class="pro">loading</span>=<span class="gt">"lazy"</span><span class="tag">&gt;</span></pre>
+
+                <div class="meo">Công cụ nén ảnh miễn phí: <b>squoosh.app</b> (của Google, chạy ngay trên trình duyệt) hoặc <b>tinypng.com</b>. Kéo ảnh vào, chọn WebP, tải kết quả về.</div>
+            </section>
+
+            <!-- ===================== 6. TỐI ƯU CSS/JS ===================== -->
+            <section class="muc">
+                <h2>6. Tối ưu CSS và JavaScript</h2>
+                <table class="bang">
+                    <thead>
+                        <tr>
+                            <th>Việc cần làm</th>
+                            <th>Lợi ích</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Gộp nhiều file CSS thành một</td>
+                            <td>Mỗi file là một lần trình duyệt phải đi hỏi máy chủ — ít file thì tải nhanh hơn</td>
+                        </tr>
+                        <tr>
+                            <td>Nén (minify) CSS và JS</td>
+                            <td>Xóa khoảng trắng và chú thích, giảm khoảng 30% dung lượng</td>
+                        </tr>
+                        <tr>
+                            <td>Đặt <code>&lt;link&gt;</code> CSS trong <code>&lt;head&gt;</code></td>
+                            <td>Trang hiện ra đã có định dạng sẵn, không bị "nháy" chữ thô</td>
+                        </tr>
+                        <tr>
+                            <td>Đặt <code>&lt;script&gt;</code> cuối <code>&lt;body&gt;</code> hoặc thêm <code>defer</code></td>
+                            <td>JS không chặn việc hiển thị nội dung</td>
+                        </tr>
+                        <tr>
+                            <td>Xóa CSS và thư viện không dùng</td>
+                            <td>Nhiều bạn nhúng cả Bootstrap chỉ để dùng một cái nút</td>
+                        </tr>
+                        <tr>
+                            <td>Chỉ chuyển động <code>transform</code> và <code>opacity</code></td>
+                            <td>Hiệu ứng mượt, không bắt trình duyệt tính lại bố cục</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <pre class="code"><span class="cm">&lt;!-- CSS: đặt trong head --&gt;</span>
+<span class="tag">&lt;head&gt;</span>
+  <span class="tag">&lt;link</span> <span class="pro">rel</span>=<span class="gt">"stylesheet"</span> <span class="pro">href</span>=<span class="gt">"css/style.css"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/head&gt;</span>
+
+<span class="cm">&lt;!-- JS: thêm defer để không chặn việc hiển thị --&gt;</span>
+<span class="tag">&lt;script</span> <span class="pro">src</span>=<span class="gt">"js/main.js"</span> <span class="pro">defer</span><span class="tag">&gt;&lt;/script&gt;</span></pre>
+            </section>
+
+            <!-- ===================== 7. LIGHTHOUSE ===================== -->
+            <section class="muc">
+                <h2>7. Lighthouse và PageSpeed Insights</h2>
+                <p class="dan">Lighthouse có sẵn trong Chrome: <code class="nho">F12 → Lighthouse</code> → chọn <b>Mobile</b> → bấm <b>Analyze page load</b>. Nó chấm điểm trang và liệt kê từng việc cần sửa.</p>
+
+                <div class="diem-lh">
+                    <div class="vong">
+                        <div class="so xanh">96</div>
+                        <b>Performance</b><br /><small>Tốc độ tải</small>
+                    </div>
+                    <div class="vong">
+                        <div class="so xanh">100</div>
+                        <b>Accessibility</b><br /><small>Dễ tiếp cận</small>
+                    </div>
+                    <div class="vong">
+                        <div class="so cam">78</div>
+                        <b>Best Practices</b><br /><small>Thực hành tốt</small>
+                    </div>
+                    <div class="vong">
+                        <div class="so xanh">100</div>
+                        <b>SEO</b><br /><small>Chuẩn tìm kiếm</small>
+                    </div>
+                </div>
+
+                <table class="bang">
+                    <thead>
+                        <tr>
+                            <th>Thang điểm</th>
+                            <th>Ý nghĩa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>90 – 100 (xanh)</td>
+                            <td>Tốt</td>
+                        </tr>
+                        <tr>
+                            <td>50 – 89 (cam)</td>
+                            <td>Cần cải thiện</td>
+                        </tr>
+                        <tr>
+                            <td>0 – 49 (đỏ)</td>
+                            <td>Kém, phải sửa</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="meo"><b>PageSpeed Insights</b> (<a href="https://pagespeed.web.dev" target="_blank" rel="noopener">pagespeed.web.dev</a>) chạy cùng bộ chấm điểm Lighthouse nhưng trên máy chủ Google, và cần trang đã đưa lên mạng. Lighthouse trong DevTools chạy được cả với file trên máy.</div>
+
+                <h3>Checklist trước khi nộp bài</h3>
+                <ul class="kiem">
+                    <li>Mở <code class="nho">F12 → Console</code>: không còn dòng đỏ nào</li>
+                    <li>Mở <code class="nho">F12 → Network</code>: không có file nào báo 404</li>
+                    <li>Kiểm tra W3C HTML: 0 Error</li>
+                    <li>Ảnh đã nén, có <code class="nho">alt</code>, <code class="nho">width</code>, <code class="nho">height</code></li>
+                    <li>Thử ở chế độ điện thoại (<code class="nho">Ctrl + Shift + M</code>): không bị cuộn ngang</li>
+                    <li>Nén cả thư mục rồi <b>giải nén ra chỗ khác mở thử</b> — cách chắc chắn nhất để phát hiện thiếu file</li>
+                </ul>
+            </section>
+
+            <section class="muc">
+                <h2>Bài tập tại lớp</h2>
+                <ol>
+                    <li>Chạy Lighthouse cho chính trang này, chụp màn hình bảng điểm và cho biết mục nào bị trừ điểm.</li>
+                    <li>Sửa lỗi 404 ở mục 4 bằng cách thay ảnh giả bằng một ảnh có thật trong thư mục, rồi kiểm tra lại Console.</li>
+                    <li>Lấy bài tập Form của buổi trước, dán mã vào <b>validator.w3.org</b> (Direct Input) và sửa cho đến khi còn 0 Error.</li>
+                    <li>Nén một ảnh bất kỳ bằng <b>squoosh.app</b> sang WebP và so sánh dung lượng trước – sau.</li>
+                </ol>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="wrap">
+                <p>&copy; 2026 — Đại học Lạc Hồng · Demo Chương 4, phần 5 và 6</p>
+            </div>
+        </footer>
+
+        <script>
+            /* ============================================================
+   Đoạn mã này chỉ phục vụ việc minh họa tab Console.
+   ============================================================ */
+            document.querySelectorAll("[data-loai]").forEach(function (nut) {
+                nut.addEventListener("click", function () {
+                    switch (nut.dataset.loai) {
+                        case "log":
+                            console.log("Đây là console.log — dùng để in thông tin theo dõi.");
+                            break;
+                        case "info":
+                            console.info("Đây là console.info — ghi chú, hiển thị như log.");
+                            break;
+                        case "warn":
+                            console.warn("Đây là console.warn — nền vàng, cảnh báo nhưng trang vẫn chạy.");
+                            break;
+                        case "error":
+                            console.error("Đây là console.error — nền đỏ, báo có thứ đang hỏng.");
+                            break;
+                        case "table":
+                            console.table([
+                                { mssv: "125001899", ten: "Ngô Sĩ Nhân", ketQua: "Đạt" },
+                                { mssv: "125002092", ten: "Trương Vĩnh Khang", ketQua: "Đạt" },
+                                { mssv: "125002186", ten: "Bùi Hoàng Long", ketQua: "Không đạt" },
+                            ]);
+                            break;
+                        case "count":
+                            console.count("Số lần bấm nút này");
+                            break;
+                        case "nem":
+                            // Cố tình dùng một biến chưa khai báo để tạo ReferenceError
+                            console.log(bienChuaKhaiBao);
+                            break;
+                    }
+                });
+            });
+
+            console.log("%c[Demo 6] Mở tab Console rồi bấm các nút ở mục 4.", "color:#1F509E;font-weight:bold;font-size:13px");
+        </script>
+    </body>
+</html>

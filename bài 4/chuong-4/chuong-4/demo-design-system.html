@@ -1,0 +1,724 @@
+<!doctype html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Demo 1 — CSS Design System với biến CSS | Thiết kế Web</title>
+        <style>
+            /* ============================================================
+   PHẦN 1 — KHAI BÁO BIẾN TOÀN CỤC TRONG :root
+   Đây là "bảng màu và bảng kích thước" của cả website.
+   Muốn đổi giao diện, chỉ cần sửa ở ĐÂY, không sửa từng chỗ.
+   ============================================================ */
+            :root {
+                /* --- Màu thương hiệu --- */
+                --chinh: #1f509e;
+                --chinh-dam: #163c77;
+                --chinh-nhat: #eaf0fb;
+                --phu: #e6a811;
+                --thanh-cong: #1e8e3e;
+                --canh-bao: #d98200;
+                --loi: #c5221f;
+
+                /* --- Màu nền và chữ --- */
+                --nen: #f6f7f9;
+                --the: #ffffff;
+                --chu: #1b1f27;
+                --chu-mo: #5c626e;
+                --vien: #e1e7f0;
+
+                /* --- Khoảng cách (thang 4px) --- */
+                --cach-1: 4px;
+                --cach-2: 8px;
+                --cach-3: 16px;
+                --cach-4: 24px;
+                --cach-5: 32px;
+                --cach-6: 48px;
+
+                /* --- Cỡ chữ --- */
+                --chu-nho: 13px;
+                --chu-thuong: 16px;
+                --chu-to: 20px;
+                --chu-tieu-de: 28px;
+
+                /* --- Bo góc và đổ bóng --- */
+                --bo-goc: 10px;
+                --bo-goc-tron: 999px;
+                --bong: 0 1px 2px rgba(16, 24, 40, 0.05), 0 6px 18px rgba(16, 24, 40, 0.06);
+            }
+
+            /* ============================================================
+   ĐỔI MÀU CHỦ ĐẠO — chỉ gán lại ĐÚNG MỘT biến --chinh
+   Cả trang đổi theo ngay lập tức. Đây chính là sức mạnh
+   của Design System.
+   ============================================================ */
+            body:has(#mau-xanh-la:checked) {
+                --chinh: #1e6b3c;
+                --chinh-dam: #14502c;
+                --chinh-nhat: #e7f3ec;
+            }
+            body:has(#mau-tim:checked) {
+                --chinh: #6a2fa0;
+                --chinh-dam: #4e2077;
+                --chinh-nhat: #f1e9f8;
+            }
+            body:has(#mau-cam:checked) {
+                --chinh: #c2570b;
+                --chinh-dam: #94420a;
+                --chinh-nhat: #fdefe3;
+            }
+
+            /* ============================================================
+   GIAO DIỆN TỐI (Dark mode) — mục 1.9 của bài giảng
+   Không viết lại một dòng CSS nào cho từng thành phần,
+   chỉ gán lại giá trị của các biến màu.
+   ============================================================ */
+            body:has(#che-do-toi:checked) {
+                --nen: #14171c;
+                --the: #1e232b;
+                --chu: #e8ebf0;
+                --chu-mo: #a4acba;
+                --vien: #2e3540;
+                --chinh-nhat: #22303f;
+                --bong: 0 1px 2px rgba(0, 0, 0, 0.4), 0 6px 18px rgba(0, 0, 0, 0.35);
+            }
+
+            /* ====== Bộ khung dùng chung cho các file demo — Chương 4 ====== */
+            * {
+                box-sizing: border-box;
+            }
+            body {
+                margin: 0;
+                background: var(--nen);
+                color: var(--chu);
+                font:
+                    16px/1.6 Arial,
+                    "Helvetica Neue",
+                    Helvetica,
+                    sans-serif;
+            }
+            img {
+                max-width: 100%;
+                display: block;
+            }
+            a {
+                color: var(--chinh);
+            }
+            h1,
+            h2,
+            h3,
+            h4 {
+                line-height: 1.25;
+                margin: 0 0 10px;
+            }
+            .wrap {
+                max-width: 1080px;
+                margin: 0 auto;
+                padding: 0 20px;
+            }
+
+            /* ---- Thanh công cụ của bài demo (không thuộc nội dung bài học) ---- */
+            .demo-bar {
+                position: sticky;
+                top: 0;
+                z-index: 99;
+                background: #16181d;
+                color: #fff;
+                padding: 10px 20px;
+                font-size: 14px;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .demo-bar b {
+                color: #e6a811;
+            }
+            .demo-bar label {
+                display: flex;
+                gap: 8px;
+                align-items: center;
+                cursor: pointer;
+                background: #2f3542;
+                padding: 7px 13px;
+                border-radius: 8px;
+                white-space: nowrap;
+            }
+            .demo-bar input {
+                accent-color: #e6a811;
+                width: 16px;
+                height: 16px;
+            }
+
+            /* ---- Tiêu đề trang ---- */
+            .site-header {
+                background: var(--the);
+                border-bottom: 1px solid var(--vien);
+                padding: 22px 0;
+            }
+            .site-header h1 {
+                font-size: 26px;
+                color: var(--chinh);
+                margin: 0;
+            }
+            .site-header p {
+                margin: 4px 0 0;
+                color: var(--chu-mo);
+                font-size: 14px;
+            }
+
+            /* ---- Mỗi mục bài học ---- */
+            main {
+                max-width: 1080px;
+                margin: 0 auto;
+                padding: 26px 20px;
+            }
+            section.muc {
+                background: var(--the);
+                border: 1px solid var(--vien);
+                border-radius: var(--bo-goc);
+                box-shadow: var(--bong);
+                padding: 22px 26px;
+                margin-bottom: 24px;
+            }
+            section.muc > h2 {
+                font-size: 22px;
+                color: var(--chinh);
+                border-bottom: 2px solid var(--vien);
+                padding-bottom: 10px;
+            }
+            section.muc h3 {
+                font-size: 17px;
+                color: var(--chinh);
+                margin-top: 22px;
+            }
+            .dan {
+                color: var(--chu-mo);
+                font-size: 15px;
+                margin-top: 0;
+            }
+
+            /* ---- Khung code ---- */
+            pre.code {
+                background: #f3f6fb;
+                border: 1px solid #c9d6ea;
+                border-radius: 8px;
+                padding: 14px 16px;
+                overflow-x: auto;
+                margin: 10px 0 0;
+                font:
+                    14px/1.65 Consolas,
+                    "Courier New",
+                    monospace;
+                color: #1b1f27;
+                white-space: pre;
+            }
+            pre.code .tag {
+                color: #0051c2;
+            }
+            pre.code .pro {
+                color: #7030a0;
+            }
+            pre.code .gt {
+                color: #008000;
+            }
+            pre.code .cm {
+                color: #6e7687;
+                font-style: italic;
+            }
+            code.nho {
+                background: #edf1f8;
+                border: 1px solid #d8e1ee;
+                border-radius: 4px;
+                padding: 1px 6px;
+                font:
+                    14px Consolas,
+                    "Courier New",
+                    monospace;
+                color: #0051c2;
+            }
+
+            /* ---- Bảng ---- */
+            table.bang {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 15px;
+                margin-top: 10px;
+            }
+            table.bang th,
+            table.bang td {
+                border: 1px solid var(--vien);
+                padding: 9px 12px;
+                text-align: left;
+                vertical-align: top;
+            }
+            table.bang thead th {
+                background: var(--chinh);
+                color: #fff;
+            }
+            table.bang tbody tr:nth-child(even) {
+                background: rgba(31, 80, 158, 0.04);
+            }
+            table.bang td:first-child {
+                font-family: Consolas, "Courier New", monospace;
+                color: #0051c2;
+            }
+
+            /* ---- Ghi chú ---- */
+            .luuy {
+                background: #fff7e6;
+                border-left: 4px solid #e6a811;
+                border-radius: 0 8px 8px 0;
+                padding: 12px 16px;
+                margin-top: 16px;
+                font-size: 15px;
+            }
+            .meo {
+                background: rgba(31, 80, 158, 0.07);
+                border-left: 4px solid var(--chinh);
+                border-radius: 0 8px 8px 0;
+                padding: 12px 16px;
+                margin-top: 16px;
+                font-size: 15px;
+            }
+
+            .site-footer {
+                background: #1b1f27;
+                color: #c9cfda;
+                padding: 24px 0;
+                margin-top: 10px;
+                font-size: 14px;
+            }
+            .site-footer a {
+                color: #fff;
+            }
+
+            /* ============================================================
+   PHẦN 2 — CÁC THÀNH PHẦN ĐỀU DÙNG LẠI BIẾN Ở TRÊN
+   Chú ý: bên dưới KHÔNG có mã màu nào viết cứng.
+   ============================================================ */
+
+            /* --- Ô màu minh họa --- */
+            .dai-mau {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: var(--cach-3);
+                margin-top: var(--cach-3);
+            }
+            .o-mau {
+                border: 1px solid var(--vien);
+                border-radius: var(--bo-goc);
+                overflow: hidden;
+                background: var(--the);
+            }
+            .o-mau .mau {
+                height: 64px;
+            }
+            .o-mau .ten {
+                padding: 8px 10px;
+                font:
+                    12px/1.5 Consolas,
+                    "Courier New",
+                    monospace;
+                color: var(--chu-mo);
+                word-break: break-all;
+            }
+
+            /* --- Nút bấm: 4 kiểu, cùng một bộ biến --- */
+            .hang-nut {
+                display: flex;
+                flex-wrap: wrap;
+                gap: var(--cach-3);
+                margin-top: var(--cach-3);
+            }
+            .nut {
+                padding: var(--cach-2) var(--cach-4);
+                border: 1px solid transparent;
+                border-radius: var(--bo-goc);
+                font-size: var(--chu-thuong);
+                font-weight: bold;
+                cursor: pointer;
+                font-family: inherit;
+                transition:
+                    background-color 0.2s,
+                    color 0.2s;
+            }
+            .nut-chinh {
+                background: var(--chinh);
+                color: #fff;
+            }
+            .nut-chinh:hover {
+                background: var(--chinh-dam);
+            }
+            .nut-vien {
+                background: transparent;
+                color: var(--chinh);
+                border-color: var(--chinh);
+            }
+            .nut-vien:hover {
+                background: var(--chinh-nhat);
+            }
+            .nut-nhe {
+                background: var(--chinh-nhat);
+                color: var(--chinh);
+            }
+            .nut-loi {
+                background: var(--loi);
+                color: #fff;
+            }
+            .nut-tron {
+                border-radius: var(--bo-goc-tron);
+            }
+
+            /* --- Nhãn trạng thái --- */
+            .hang-nhan {
+                display: flex;
+                flex-wrap: wrap;
+                gap: var(--cach-2);
+                margin-top: var(--cach-3);
+            }
+            .nhan {
+                padding: var(--cach-1) var(--cach-3);
+                border-radius: var(--bo-goc-tron);
+                font-size: var(--chu-nho);
+                font-weight: bold;
+                color: #fff;
+            }
+            .nhan-chinh {
+                background: var(--chinh);
+            }
+            .nhan-tot {
+                background: var(--thanh-cong);
+            }
+            .nhan-cho {
+                background: var(--canh-bao);
+            }
+            .nhan-loi {
+                background: var(--loi);
+            }
+
+            /* --- Thẻ sản phẩm --- */
+            .luoi-the {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+                gap: var(--cach-4);
+                margin-top: var(--cach-3);
+            }
+            .the-sp {
+                background: var(--the);
+                border: 1px solid var(--vien);
+                border-radius: var(--bo-goc);
+                box-shadow: var(--bong);
+                padding: var(--cach-4);
+                color: var(--chu);
+            }
+            .the-sp h4 {
+                color: var(--chinh);
+                font-size: var(--chu-to);
+                margin-bottom: var(--cach-1);
+            }
+            .the-sp p {
+                color: var(--chu-mo);
+                font-size: var(--chu-nho);
+                margin: 0 0 var(--cach-3);
+            }
+            .the-sp .gia {
+                font-size: var(--chu-to);
+                font-weight: bold;
+                color: var(--chinh);
+                display: block;
+                margin-bottom: var(--cach-3);
+            }
+
+            /* --- Ô nhập --- */
+            .o-nhap {
+                width: 100%;
+                max-width: 340px;
+                padding: var(--cach-2) var(--cach-3);
+                border: 1px solid var(--vien);
+                border-radius: var(--bo-goc);
+                background: var(--the);
+                color: var(--chu);
+                font: var(--chu-thuong) inherit;
+                font-family: inherit;
+                margin-top: var(--cach-3);
+            }
+            .o-nhap:focus {
+                outline: none;
+                border-color: var(--chinh);
+                box-shadow: 0 0 0 3px var(--chinh-nhat);
+            }
+
+            /* ============================================================
+   PHẦN 3 — PHẠM VI (SCOPE) CỦA BIẾN
+   Biến khai báo bên trong một thẻ chỉ có tác dụng
+   cho thẻ đó và các thẻ con của nó.
+   ============================================================ */
+            .khu-canh-bao {
+                --chinh: var(--canh-bao); /* ghi đè CHỈ trong khối này */
+                --chinh-dam: #a66300;
+                --chinh-nhat: #fdf3e2;
+                border: 1px dashed var(--canh-bao);
+                border-radius: var(--bo-goc);
+                padding: var(--cach-4);
+                margin-top: var(--cach-3);
+            }
+
+            /* --- Thanh chọn màu trên đầu trang --- */
+            .chon-mau {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                align-items: center;
+            }
+            .chon-mau label {
+                cursor: pointer;
+                background: #2f3542;
+                padding: 6px 12px;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                gap: 7px;
+                font-size: 13px;
+            }
+            .chon-mau .cham {
+                width: 14px;
+                height: 14px;
+                border-radius: 50%;
+                display: inline-block;
+            }
+            .chon-mau input {
+                width: 14px;
+                height: 14px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="demo-bar">
+            <span><b>Demo 1 — Design System</b> · sửa 1 biến, cả trang đổi theo</span>
+
+            <!-- Bốn nút chọn màu chủ đạo: chỉ đổi giá trị biến --chinh -->
+            <div class="chon-mau">
+                <label><input type="radio" name="mau" id="mau-xanh-duong" checked /> <span class="cham" style="background: #1f509e"></span> Xanh dương</label>
+                <label><input type="radio" name="mau" id="mau-xanh-la" /> <span class="cham" style="background: #1e6b3c"></span> Xanh lá</label>
+                <label><input type="radio" name="mau" id="mau-tim" /> <span class="cham" style="background: #6a2fa0"></span> Tím</label>
+                <label><input type="radio" name="mau" id="mau-cam" /> <span class="cham" style="background: #c2570b"></span> Cam</label>
+            </div>
+
+            <label><input type="checkbox" id="che-do-toi" /> Giao diện tối</label>
+        </div>
+
+        <header class="site-header">
+            <div class="wrap">
+                <h1>CSS Design System &amp; Biến CSS</h1>
+                <p>Demo thực hành — Chương 4, phần 1</p>
+            </div>
+        </header>
+
+        <main>
+            <!-- ===================== 1. KHAI BÁO BIẾN ===================== -->
+            <section class="muc">
+                <h2>1. Khai báo biến trong <code class="nho">:root</code></h2>
+                <p class="dan">Tên biến bắt buộc bắt đầu bằng hai dấu gạch ngang. Dùng lại bằng hàm <code class="nho">var()</code>.</p>
+
+                <pre class="code"><span class="cm">/* Khai báo — đặt trong :root để dùng cho toàn trang */</span>
+<span class="tag">:root</span>{
+  <span class="pro">--chinh</span>: <span class="gt">#1F509E</span>;
+  <span class="pro">--cach-3</span>: <span class="gt">16px</span>;
+  <span class="pro">--bo-goc</span>: <span class="gt">10px</span>;
+}
+
+<span class="cm">/* Sử dụng */</span>
+<span class="tag">.nut</span>{
+  <span class="pro">background</span>: <span class="gt">var(--chinh)</span>;
+  <span class="pro">padding</span>: <span class="gt">var(--cach-3)</span>;
+  <span class="pro">border-radius</span>: <span class="gt">var(--bo-goc)</span>;
+}
+
+<span class="cm">/* Giá trị dự phòng nếu biến chưa được khai báo */</span>
+<span class="pro">color</span>: <span class="gt">var(--mau-phu, #333)</span>;</pre>
+
+                <h3>Bảng màu của hệ thống</h3>
+                <div class="dai-mau">
+                    <div class="o-mau">
+                        <div class="mau" style="background: var(--chinh)"></div>
+                        <div class="ten">--chinh</div>
+                    </div>
+                    <div class="o-mau">
+                        <div class="mau" style="background: var(--chinh-dam)"></div>
+                        <div class="ten">--chinh-dam</div>
+                    </div>
+                    <div class="o-mau">
+                        <div class="mau" style="background: var(--chinh-nhat)"></div>
+                        <div class="ten">--chinh-nhat</div>
+                    </div>
+                    <div class="o-mau">
+                        <div class="mau" style="background: var(--phu)"></div>
+                        <div class="ten">--phu</div>
+                    </div>
+                    <div class="o-mau">
+                        <div class="mau" style="background: var(--thanh-cong)"></div>
+                        <div class="ten">--thanh-cong</div>
+                    </div>
+                    <div class="o-mau">
+                        <div class="mau" style="background: var(--canh-bao)"></div>
+                        <div class="ten">--canh-bao</div>
+                    </div>
+                    <div class="o-mau">
+                        <div class="mau" style="background: var(--loi)"></div>
+                        <div class="ten">--loi</div>
+                    </div>
+                    <div class="o-mau">
+                        <div class="mau" style="background: var(--nen); border-bottom: 1px solid var(--vien)"></div>
+                        <div class="ten">--nen</div>
+                    </div>
+                </div>
+
+                <div class="meo"><b>Thử ngay:</b> bấm bốn nút chọn màu trên thanh đen. Toàn bộ nút, thẻ, ô nhập, tiêu đề đều đổi màu — trong khi file CSS <b>không có một dòng nào được sửa</b>. Tất cả chỉ vì biến <code class="nho">--chinh</code> nhận giá trị mới.</div>
+            </section>
+
+            <!-- ===================== 2. CÁC THÀNH PHẦN ===================== -->
+            <section class="muc">
+                <h2>2. Các thành phần dựng từ biến</h2>
+                <p class="dan">Đây là phần "Component" của một Design System: nút, nhãn, thẻ, ô nhập. Tất cả đều lấy màu, khoảng cách và bo góc từ bộ biến chung nên trông luôn đồng bộ.</p>
+
+                <h3>Nút bấm</h3>
+                <div class="hang-nut">
+                    <button class="nut nut-chinh">Nút chính</button>
+                    <button class="nut nut-vien">Nút viền</button>
+                    <button class="nut nut-nhe">Nút nhẹ</button>
+                    <button class="nut nut-loi">Xóa</button>
+                    <button class="nut nut-chinh nut-tron">Nút bo tròn</button>
+                </div>
+
+                <h3>Nhãn trạng thái</h3>
+                <div class="hang-nhan">
+                    <span class="nhan nhan-chinh">Mới</span>
+                    <span class="nhan nhan-tot">Đã duyệt</span>
+                    <span class="nhan nhan-cho">Chờ xử lý</span>
+                    <span class="nhan nhan-loi">Từ chối</span>
+                </div>
+
+                <h3>Ô nhập liệu</h3>
+                <input class="o-nhap" type="text" placeholder="Bấm vào đây để xem viền đổi màu" />
+
+                <h3>Thẻ sản phẩm</h3>
+                <div class="luoi-the">
+                    <div class="the-sp">
+                        <h4>Laptop Pro 14</h4>
+                        <p>Core i5 · RAM 16GB · SSD 512GB</p>
+                        <span class="gia">18.990.000 đ</span>
+                        <button class="nut nut-chinh">Mua ngay</button>
+                    </div>
+                    <div class="the-sp">
+                        <h4>Chuột không dây</h4>
+                        <p>Kết nối Bluetooth · pin 6 tháng</p>
+                        <span class="gia">350.000 đ</span>
+                        <button class="nut nut-vien">Xem thêm</button>
+                    </div>
+                    <div class="the-sp">
+                        <h4>Bàn phím cơ</h4>
+                        <p>Switch nâu · đèn nền RGB</p>
+                        <span class="gia">1.290.000 đ</span>
+                        <button class="nut nut-vien">Xem thêm</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===================== 3. PHẠM VI CỦA BIẾN ===================== -->
+            <section class="muc">
+                <h2>3. Phạm vi (scope) của biến</h2>
+                <p class="dan">Biến khai báo trong <code class="nho">:root</code> dùng được ở mọi nơi. Biến khai báo bên trong một thẻ chỉ có tác dụng cho thẻ đó và các thẻ con.</p>
+
+                <pre class="code"><span class="tag">.khu-canh-bao</span>{
+  <span class="pro">--chinh</span>: <span class="gt">var(--canh-bao)</span>;   <span class="cm">/* chỉ đổi BÊN TRONG khối này */</span>
+}</pre>
+
+                <div class="khu-canh-bao">
+                    <h3 style="margin-top: 0; color: var(--chinh)">Khu vực cảnh báo</h3>
+                    <p class="dan">Vẫn dùng đúng class <code class="nho">.nut-chinh</code> như ở trên, nhưng vì biến <code class="nho">--chinh</code> đã bị ghi đè trong khối này nên nút chuyển sang màu cam.</p>
+                    <div class="hang-nut">
+                        <button class="nut nut-chinh">Nút chính</button>
+                        <button class="nut nut-vien">Nút viền</button>
+                        <button class="nut nut-nhe">Nút nhẹ</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===================== 4. GIAO DIỆN SÁNG - TỐI ===================== -->
+            <section class="muc">
+                <h2>4. Đổi giao diện sáng – tối</h2>
+                <p class="dan">Bật ô <b>Giao diện tối</b> trên thanh đen. Chỉ cần gán lại giá trị cho các biến màu, không cần viết lại CSS cho từng thành phần.</p>
+
+                <pre class="code"><span class="cm">/* Giao diện sáng — mặc định */</span>
+<span class="tag">:root</span>{
+  <span class="pro">--nen</span>: <span class="gt">#F6F7F9</span>;
+  <span class="pro">--the</span>: <span class="gt">#FFFFFF</span>;
+  <span class="pro">--chu</span>: <span class="gt">#1B1F27</span>;
+}
+
+<span class="cm">/* Giao diện tối — chỉ đổi GIÁ TRỊ của đúng ba biến */</span>
+<span class="tag">body.toi</span>{
+  <span class="pro">--nen</span>: <span class="gt">#14171C</span>;
+  <span class="pro">--the</span>: <span class="gt">#1E232B</span>;
+  <span class="pro">--chu</span>: <span class="gt">#E8EBF0</span>;
+}</pre>
+
+                <div class="luuy"><b>Lưu ý:</b> muốn làm được như trên, mọi màu trong CSS phải viết bằng <code class="nho">var(--ten-bien)</code>. Chỉ cần một chỗ viết cứng <code class="nho">color:#000</code> là chỗ đó sẽ "chết cứng" khi đổi sang giao diện tối.</div>
+            </section>
+
+            <!-- ===================== 5. QUY ƯỚC ĐẶT TÊN ===================== -->
+            <section class="muc">
+                <h2>5. Quy ước đặt tên biến</h2>
+                <table class="bang">
+                    <thead>
+                        <tr>
+                            <th>Nên đặt</th>
+                            <th>Không nên</th>
+                            <th>Vì sao</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>--chinh</td>
+                            <td>--xanh-duong</td>
+                            <td>Đặt theo <b>vai trò</b>, không theo màu sắc — đổi sang màu cam vẫn đúng tên</td>
+                        </tr>
+                        <tr>
+                            <td>--cach-3</td>
+                            <td>--padding-16</td>
+                            <td>Đặt theo <b>bậc</b> của thang khoảng cách, không gắn với con số cụ thể</td>
+                        </tr>
+                        <tr>
+                            <td>--chu-to</td>
+                            <td>--font20</td>
+                            <td>Sau này đổi 20px thành 22px, tên biến vẫn còn nghĩa</td>
+                        </tr>
+                        <tr>
+                            <td>--nut-nen</td>
+                            <td>--mau1</td>
+                            <td>Tên phải nói rõ dùng ở đâu</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="meo">Cách đọc tên chuẩn: <b>nhóm – thành phần – trạng thái</b>. Ví dụ <code class="nho">--nut-nen-hover</code> = nền của nút khi rê chuột.</div>
+            </section>
+
+            <section class="muc">
+                <h2>Bài tập tại lớp</h2>
+                <ol>
+                    <li>Mở <code class="nho">F12 → Elements</code>, chọn thẻ <code class="nho">&lt;html&gt;</code>, tìm mục <code class="nho">:root</code> ở khung Styles bên phải và sửa trực tiếp giá trị <code class="nho">--bo-goc</code> thành <code class="nho">0px</code>. Quan sát tất cả nút và thẻ đều vuông góc lại.</li>
+                    <li>Thêm một biến mới <code class="nho">--chinh-rat-nhat</code> rồi dùng nó làm màu nền cho <code class="nho">.the-sp</code>.</li>
+                    <li>Tự thêm nút màu thứ năm (ví dụ màu đỏ) vào thanh chọn màu ở trên đầu trang.</li>
+                </ol>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="wrap">
+                <p>&copy; 2026 — Đại học Lạc Hồng · Demo Chương 4, phần 1: CSS Design System</p>
+            </div>
+        </footer>
+    </body>
+</html>
