@@ -1,0 +1,240 @@
+
+    :root {
+      --primary-color: #2563eb;
+      --primary-hover: #1d4ed8;
+      --heading-color: #0f172a;
+      --text-color: #334155;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --border-color: #e2e8f0;
+      --code-bg: #0f172a;
+      --code-text: #f8fafc;
+      --highlight-bg: #dbeafe;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.7;
+      color: var(--text-color);
+      background-color: var(--bg-color);
+      margin: 0;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Standardized Card Style */
+    .section-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+
+    /* Headings */
+    h1 {
+      text-align: center;
+      color: var(--heading-color);
+      font-size: 2.25rem;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #64748b;
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+    }
+
+    h2 {
+      color: var(--primary-color);
+      margin-top: 0;
+      font-size: 1.5rem;
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 0.5rem;
+    }
+
+    h3 {
+      color: #1e40af;
+      margin-top: 1.5rem;
+      font-size: 1.2rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+    }
+
+    ul, ol {
+      padding-left: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Standardized Highlight / Alert Box */
+    .highlight-box {
+      background-color: var(--highlight-bg);
+      border-left: 4px solid var(--primary-color);
+      padding: 1rem;
+      margin: 1.5rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    /* Standardized Syntax Highlighting Code Block */
+    pre {
+      background-color: var(--code-bg);
+      color: var(--code-text);
+      padding: 1.25rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: "Fira Code", Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin: 1rem 0;
+    }
+
+    code {
+      font-family: "Fira Code", Consolas, Monaco, monospace;
+      background-color: #e2e8f0;
+      color: #0f172a;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    pre code {
+      background-color: transparent;
+      color: inherit;
+      padding: 0;
+    }
+
+    /* Code Syntax Colors */
+    .tag { color: #f43f5e; }
+    .attr { color: #38bdf8; }
+    .str { color: #a3e635; }
+    .keyword { color: #c084fc; }
+    .func { color: #60a5fa; }
+    .comment { color: #94a3b8; font-style: italic; }
+
+    /* Standardized Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+    }
+
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 0.75rem 1rem;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f1f5f9;
+      font-weight: 600;
+      color: var(--heading-color);
+    }
+
+    tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    /* Interactive UI Components for Practice Section */
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      max-width: 320px;
+      padding: 8px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .error-message {
+      color: #dc2626;
+      font-size: 13px;
+      display: block;
+      margin-top: 4px;
+    }
+
+    .faq-item {
+      margin-bottom: 10px;
+    }
+
+    .faq-btn {
+      width: 100%;
+      text-align: left;
+      background-color: #f1f5f9;
+      color: #0f172a;
+      font-weight: 600;
+      border: 1px solid #cbd5e1;
+    }
+
+    .faq-btn:hover {
+      background-color: #e2e8f0;
+    }
+
+    .faq-answer {
+      padding: 12px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .color-box {
+      text-align: center;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      transition: background-color 0.3s ease;
+    }
+
+    .img-preview {
+      margin-top: 10px;
+      max-width: 200px;
+      max-height: 200px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      display: block;
+      object-fit: cover;
+    }
+
+    .highlight-text {
+      font-weight: bold;
+      color: #0369a1;
+    }
+  

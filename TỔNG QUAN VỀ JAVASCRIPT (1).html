@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tài Liệu Toàn Diện: JavaScript Trong Thiết Kế Web & DOM</title>
+  <style>
+    :root {
+      --primary-color: #2563eb;
+      --primary-hover: #1d4ed8;
+      --heading-color: #0f172a;
+      --text-color: #334155;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --border-color: #e2e8f0;
+      --code-bg: #0f172a;
+      --code-text: #f8fafc;
+      --highlight-bg: #dbeafe;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.7;
+      color: var(--text-color);
+      background-color: var(--bg-color);
+      margin: 0;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Standardized Card Style */
+    .section-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+
+    /* Headings */
+    h1 {
+      text-align: center;
+      color: var(--heading-color);
+      font-size: 2.25rem;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #64748b;
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+    }
+
+    h2 {
+      color: var(--primary-color);
+      margin-top: 0;
+      font-size: 1.5rem;
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 0.5rem;
+    }
+
+    h3 {
+      color: #1e40af;
+      margin-top: 1.5rem;
+      font-size: 1.2rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+    }
+
+    ul, ol {
+      padding-left: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Standardized Highlight / Alert Box */
+    .highlight-box {
+      background-color: var(--highlight-bg);
+      border-left: 4px solid var(--primary-color);
+      padding: 1rem;
+      margin: 1.5rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    /* Standardized Syntax Highlighting Code Block */
+    pre {
+      background-color: var(--code-bg);
+      color: var(--code-text);
+      padding: 1.25rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: "Fira Code", Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin: 1rem 0;
+    }
+
+    code {
+      font-family: "Fira Code", Consolas, Monaco, monospace;
+      background-color: #e2e8f0;
+      color: #0f172a;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    pre code {
+      background-color: transparent;
+      color: inherit;
+      padding: 0;
+    }
+
+    /* Code Syntax Colors */
+    .tag { color: #f43f5e; }
+    .attr { color: #38bdf8; }
+    .str { color: #a3e635; }
+    .keyword { color: #c084fc; }
+    .func { color: #60a5fa; }
+    .comment { color: #94a3b8; font-style: italic; }
+
+    /* Standardized Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+    }
+
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 0.75rem 1rem;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f1f5f9;
+      font-weight: 600;
+      color: var(--heading-color);
+    }
+
+    tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    /* Interactive UI Components for Practice Section */
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      max-width: 320px;
+      padding: 8px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .error-message {
+      color: #dc2626;
+      font-size: 13px;
+      display: block;
+      margin-top: 4px;
+    }
+
+    .faq-item {
+      margin-bottom: 10px;
+    }
+
+    .faq-btn {
+      width: 100%;
+      text-align: left;
+      background-color: #f1f5f9;
+      color: #0f172a;
+      font-weight: 600;
+      border: 1px solid #cbd5e1;
+    }
+
+    .faq-btn:hover {
+      background-color: #e2e8f0;
+    }
+
+    .faq-answer {
+      padding: 12px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .color-box {
+      text-align: center;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      transition: background-color 0.3s ease;
+    }
+
+    .img-preview {
+      margin-top: 10px;
+      max-width: 200px;
+      max-height: 200px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      display: block;
+      object-fit: cover;
+    }
+
+    .highlight-text {
+      font-weight: bold;
+      color: #0369a1;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <h1>Tài Liệu & Bài Tập JavaScript DOM</h1>
+  <p class="subtitle">Tổng hợp lý thuyết toàn diện, ví dụ minh họa và bài tập thực hành tương tác</p>
+
+  <!-- ====================================================
+       PHẦN 1: TỔNG QUAN VỀ JAVASCRIPT TRONG THIẾT KẾ WEB
+       ==================================================== -->
+  <div class="section-card">
+    <h2>Phần 1: JavaScript Trong Thiết Kế Web</h2>
+
+    <div class="highlight-box">
+      <p><strong>JavaScript (JS)</strong> là một trong ba ngôn ngữ cốt lõi của phát triển web, bên cạnh <strong>HTML</strong> (xây dựng cấu trúc) và <strong>CSS</strong> (định hình giao diện). Nếu HTML là khung xương và CSS là lớp áo, thì JavaScript chính là <strong>hệ thần kinh</strong> giúp website hoạt động tương tác và linh hoạt.</p>
+    </div>
+
+    <h3>1. Vai trò của JavaScript</h3>
+    <p>JavaScript biến các trang web tĩnh (static) thành các ứng dụng web động (dynamic) nhờ các khả năng:</p>
+    <ul>
+      <li><strong>Tạo tương tác với người dùng:</strong> Xử lý sự kiện khi người dùng nhấp chuột (click), di chuyển chuột (hover), cuộn trang (scroll), hoặc gõ phím.</li>
+      <li><strong>Thao tác với DOM (Document Object Model):</strong> Thay đổi nội dung, cấu trúc và kiểu dáng CSS của trang web ngay lập tức mà không cần tải lại trang.</li>
+      <li><strong>Xử lý biểu mẫu (Form Validation):</strong> Kiểm tra dữ liệu người dùng nhập (như định dạng email, độ dài mật khẩu) trước khi gửi về máy chủ (server).</li>
+      <li><strong>Giao tiếp bất đồng bộ (AJAX &amp; Fetch API):</strong> Gửi và nhận dữ liệu từ server ngầm mà không làm gián đoạn trải nghiệm trên trang.</li>
+      <li><strong>Hiệu ứng &amp; Hoạt ảnh:</strong> Tạo menu thả xuống, slider ảnh, popup modal, hoạt ảnh chuyển động mượt mà.</li>
+    </ul>
+
+    <h3>2. Cách tích hợp JavaScript vào trang Web</h3>
+    <p>Có 3 cách chính để chèn code JavaScript vào tệp HTML:</p>
+
+    <h4>A. Inline JavaScript (Viết trực tiếp trong thẻ HTML)</h4>
+    <p>Gắn trực tiếp vào thuộc tính sự kiện của thẻ HTML.</p>
+<pre><code>&lt;<span class="tag">button</span> <span class="attr">onclick</span>=<span class="str">"alert('Xin chào!')"</span>&gt;Bấm vào đây&lt;/<span class="tag">button</span>&gt;</code></pre>
+
+    <h4>B. Internal JavaScript (Thẻ &lt;script&gt; trong tệp HTML)</h4>
+    <p>Viết code JS bên trong thẻ <code>&lt;script&gt;</code> đặt ở thẻ <code>&lt;head&gt;</code> hoặc trước thẻ đóng <code>&lt;/body&gt;</code>.</p>
+<pre><code>&lt;<span class="tag">!DOCTYPE</span> <span class="attr">html</span>&gt;
+&lt;<span class="tag">html</span>&gt;
+&lt;<span class="tag">head</span>&gt;
+    &lt;<span class="tag">title</span>&gt;Ví dụ JS Internal&lt;/<span class="tag">title</span>&gt;
+&lt;/<span class="tag">head</span>&gt;
+&lt;<span class="tag">body</span>&gt;
+    &lt;<span class="tag">h1</span> <span class="attr">id</span>=<span class="str">"title"</span>&gt;Nội dung ban đầu&lt;/<span class="tag">h1</span>&gt;
+    &lt;<span class="tag">button</span> <span class="attr">onclick</span>=<span class="str">"changeText()"</span>&gt;Đổi nội dung&lt;/<span class="tag">button</span>&gt;
+
+    &lt;<span class="tag">script</span>&gt;
+        <span class="keyword">function</span> <span class="func">changeText</span>() {
+            document.<span class="func">getElementById</span>(<span class="str">"title"</span>).innerText = <span class="str">"Nội dung đã được thay đổi!"</span>;
+        }
+    &lt;/<span class="tag">script</span>&gt;
+&lt;/<span class="tag">body</span>&gt;
+&lt;/<span class="tag">html</span>&gt;</code></pre>
+
+    <h4>C. External JavaScript (Tệp <code>.js</code> riêng biệt - <em>Khuyên dùng</em>)</h4>
+    <p>Tách riêng code JS ra một tệp độc lập (ví dụ: <code>script.js</code>) và liên kết vào HTML.</p>
+
+    <p><strong>Tệp <code>index.html</code>:</strong></p>
+<pre><code>&lt;<span class="tag">!DOCTYPE</span> <span class="attr">html</span>&gt;
+&lt;<span class="tag">html</span>&gt;
+&lt;<span class="tag">head</span>&gt;
+    &lt;<span class="tag">title</span>&gt;Ví dụ JS External&lt;/<span class="tag">title</span>&gt;
+&lt;/<span class="tag">head</span>&gt;
+&lt;<span class="tag">body</span>&gt;
+    &lt;<span class="tag">button</span> <span class="attr">id</span>=<span class="str">"btn"</span>&gt;Click me&lt;/<span class="tag">button</span>&gt;
+    
+    &lt;!-- Nhúng tệp JS bên ngoài --&gt;
+    &lt;<span class="tag">script</span> <span class="attr">src</span>=<span class="str">"script.js"</span>&gt;&lt;/<span class="tag">script</span>&gt;
+&lt;/<span class="tag">body</span>&gt;
+&lt;/<span class="tag">html</span>&gt;</code></pre>
+
+    <p><strong>Tệp <code>script.js</code>:</strong></p>
+<pre><code>document.<span class="func">getElementById</span>(<span class="str">"btn"</span>).<span class="func">addEventListener</span>(<span class="str">"click"</span>, <span class="keyword">function</span>() {
+    <span class="func">alert</span>(<span class="str">"Bạn đã nhấp vào nút!"</span>);
+});</code></pre>
+
+    <h3>3. Thư viện &amp; Framework JavaScript Phổ biến</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Loại</th>
+          <th>Tên công cụ</th>
+          <th>Mục đích sử dụng</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Framework / Library Front-end</strong></td>
+          <td><strong>React.js</strong>, <strong>Vue.js</strong>, <strong>Angular</strong></td>
+          <td>Xây dựng giao diện người dùng (UI) dạng ứng dụng một trang (SPA), quản lý trạng thái giao diện phức tạp.</td>
+        </tr>
+        <tr>
+          <td><strong>Thư viện Hiệu ứng / Animation</strong></td>
+          <td><strong>GSAP</strong>, <strong>Three.js</strong></td>
+          <td>Tạo hiệu ứng chuyên nghiệp, thiết kế web 3D tương tác cao.</td>
+        </tr>
+        <tr>
+          <td><strong>Utility / DOM</strong></td>
+          <td><strong>jQuery</strong></td>
+          <td>Giúp thao tác DOM và AJAX đơn giản hơn.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>4. Lợi ích khi sử dụng JavaScript</h3>
+    <ol>
+      <li><strong>Cải thiện trải nghiệm người dùng (UX):</strong> Phản hồi tức thì với các thao tác của người dùng.</li>
+      <li><strong>Giảm tải cho Server:</strong> Kiểm tra và xử lý dữ liệu ngay tại phía trình duyệt (client-side).</li>
+      <li><strong>Đa năng:</strong> Sử dụng ở cả Front-end, Back-end (<strong>Node.js</strong>), Di động (<strong>React Native</strong>), và Desktop (<strong>Electron</strong>).</li>
+    </ol>
+  </div>
+
+  <!-- ====================================================
+       PHẦN 2: KHUNG CHƯƠNG TRÌNH GIẢNG DẠY JAVASCRIPT DOM
+       ==================================================== -->
+  <div class="section-card">
+    <h2>Phần 2: Khung Chương Trình &amp; Ví Dụ Code JS DOM</h2>
+
+    <!-- Chuyên đề 1 -->
+    <h3>1. Giới thiệu tổng quan về DOM</h3>
+    <ul>
+      <li><span class="highlight-text">Khái niệm DOM:</span> Là gì? Tại sao JS cần DOM để tương tác với HTML/CSS.</li>
+      <li><span class="highlight-text">Cấu trúc cây DOM (DOM Tree):</span> Cấu trúc dạng cây với các Nodes, Elements, Attributes, Text.</li>
+      <li><span class="highlight-text">Đường đi của dữ liệu:</span> Mô hình Request &rarr; HTML/CSS &rarr; DOM Tree &rarr; Render.</li>
+    </ul>
+<pre><code><span class="comment">// Xem toàn bộ cây DOM của trang web</span>
+console.<span class="func">log</span>(document);
+
+<span class="comment">// Lấy thông tin các phần tử gốc</span>
+console.<span class="func">log</span>(document.documentElement); <span class="comment">// &lt;html&gt;</span>
+console.<span class="func">log</span>(document.head);            <span class="comment">// &lt;head&gt;</span>
+console.<span class="func">log</span>(document.body);            <span class="comment">// &lt;body&gt;</span></code></pre>
+
+    <!-- Chuyên đề 2 -->
+    <h3>2. Truy vấn &amp; Chọn phần tử (Selecting Elements)</h3>
+    <ul>
+      <li><span class="highlight-text">Phương thức hiện đại:</span> <code>querySelector()</code> và <code>querySelectorAll()</code>.</li>
+      <li><span class="highlight-text">Phương thức truyền thống:</span> <code>getElementById()</code>, <code>getElementsByClassName()</code>.</li>
+      <li><span class="highlight-text">So sánh:</span> <code>NodeList</code> (Static) vs <code>HTMLCollection</code> (Live).</li>
+    </ul>
+<pre><code><span class="comment">// 1. Chọn 1 phần tử đầu tiên</span>
+<span class="keyword">const</span> heading = document.<span class="func">querySelector</span>(<span class="str">'#main-title'</span>);
+<span class="keyword">const</span> submitBtn = document.<span class="func">querySelector</span>(<span class="str">'.btn-primary'</span>);
+
+<span class="comment">// 2. Chọn TẤT CẢ phần tử khớp điều kiện (NodeList)</span>
+<span class="keyword">const</span> menuItems = document.<span class="func">querySelectorAll</span>(<span class="str">'.nav-item'</span>);
+
+menuItems.<span class="func">forEach</span>((item, index) =&gt; {
+  console.<span class="func">log</span>(<span class="str">`Mục thứ ${index + 1}:`</span>, item);
+});
+
+<span class="comment">// 3. Phương thức truyền thống</span>
+<span class="keyword">const</span> header = document.<span class="func">getElementById</span>(<span class="str">'header'</span>);
+<span class="keyword">const</span> cards = document.<span class="func">getElementsByClassName</span>(<span class="str">'card'</span>); <span class="comment">// Trả về HTMLCollection</span></code></pre>
+
+    <!-- Chuyên đề 3 -->
+    <h3>3. Thay đổi nội dung &amp; Thuộc tính (Content &amp; Attributes)</h3>
+    <ul>
+      <li><span class="highlight-text">Nội dung:</span> Phân biệt <code>textContent</code>, <code>innerText</code>, và <code>innerHTML</code> (Cảnh báo XSS).</li>
+      <li><span class="highlight-text">Thuộc tính:</span> <code>getAttribute()</code>, <code>setAttribute()</code>, <code>removeAttribute()</code>.</li>
+      <li><span class="highlight-text">Data Attributes:</span> Đọc và ghi dữ liệu tùy chỉnh qua <code>element.dataset.*</code>.</li>
+    </ul>
+<pre><code><span class="keyword">const</span> box = document.<span class="func">querySelector</span>(<span class="str">'#box'</span>);
+<span class="keyword">const</span> link = document.<span class="func">querySelector</span>(<span class="str">'#my-link'</span>);
+
+<span class="comment">// 1. Thay đổi nội dung</span>
+box.textContent = <span class="str">'Nội dung chữ mới (An toàn)'</span>;
+box.innerHTML = <span class="str">'&lt;strong&gt;Chữ đậm mới&lt;/strong&gt;'</span>;
+
+<span class="comment">// 2. Thay đổi thuộc tính (Attribute)</span>
+link.<span class="func">setAttribute</span>(<span class="str">'href'</span>, <span class="str">'https://google.com'</span>);
+link.<span class="func">setAttribute</span>(<span class="str">'target'</span>, <span class="str">'_blank'</span>);
+
+<span class="comment">// 3. Thao tác với Data Attribute (data-*)</span>
+<span class="keyword">const</span> userDiv = document.<span class="func">querySelector</span>(<span class="str">'#user'</span>);
+console.<span class="func">log</span>(userDiv.dataset.userId); <span class="comment">// "102"</span>
+userDiv.dataset.role = <span class="str">'editor'</span>;      <span class="comment">// Cập nhật giá trị data-role</span></code></pre>
+
+    <!-- Chuyên đề 4 -->
+    <h3>4. Thay đổi Giao diện / CSS (Styling &amp; Classes)</h3>
+    <ul>
+      <li><span class="highlight-text">Inline Style:</span> Cú pháp <code>element.style.propertyName</code>.</li>
+      <li><span class="highlight-text">Quản lý Class:</span> <code>classList.add()</code>, <code>remove()</code>, <code>toggle()</code>, <code>contains()</code>.</li>
+    </ul>
+<pre><code><span class="keyword">const</span> card = document.<span class="func">querySelector</span>(<span class="str">'.card'</span>);
+
+<span class="comment">// 1. Thay đổi Inline Style trực tiếp</span>
+card.style.backgroundColor = <span class="str">'lightgray'</span>;
+card.style.padding = <span class="str">'20px'</span>;
+card.style.borderRadius = <span class="str">'8px'</span>;
+
+<span class="comment">// 2. Quản lý Class (Khuyên dùng)</span>
+card.classList.<span class="func">add</span>(<span class="str">'active'</span>, <span class="str">'shadow'</span>);
+card.classList.<span class="func">remove</span>(<span class="str">'active'</span>);
+
+<span class="comment">// Bật/Tắt class (Rất hay dùng cho Dark Mode, Toggle Menu)</span>
+card.classList.<span class="func">toggle</span>(<span class="str">'dark-mode'</span>);
+
+<span class="comment">// Kiểm tra sự tồn tại của class</span>
+<span class="keyword">if</span> (card.classList.<span class="func">contains</span>(<span class="str">'dark-mode'</span>)) {
+  console.<span class="func">log</span>(<span class="str">'Đang ở chế độ Dark Mode'</span>);
+}</code></pre>
+
+    <!-- Chuyên đề 5 -->
+    <h3>5. Xử lý Sự kiện (Event Handling)</h3>
+    <ul>
+      <li><span class="highlight-text">Lắng nghe sự kiện:</span> <code>addEventListener(event, callback)</code>.</li>
+      <li><span class="highlight-text">Sự kiện phổ biến:</span> Mouse, Keyboard, Form Input, Window events.</li>
+      <li><span class="highlight-text">Event Object:</span> Phân biệt <code>e.target</code>, <code>e.preventDefault()</code>, <code>e.stopPropagation()</code>.</li>
+    </ul>
+<pre><code><span class="keyword">const</span> btn = document.<span class="func">querySelector</span>(<span class="str">'#submit-btn'</span>);
+<span class="keyword">const</span> form = document.<span class="func">querySelector</span>(<span class="str">'#login-form'</span>);
+
+<span class="comment">// 1. Sự kiện Click</span>
+btn.<span class="func">addEventListener</span>(<span class="str">'click'</span>, <span class="keyword">function</span>(e) {
+  console.<span class="func">log</span>(<span class="str">'Người dùng vừa bấm nút!'</span>);
+  console.<span class="func">log</span>(<span class="str">'Thẻ được bấm là:'</span>, e.target);
+});
+
+<span class="comment">// 2. Sự kiện Form Submit (Chặn reload trang)</span>
+form.<span class="func">addEventListener</span>(<span class="str">'submit'</span>, <span class="keyword">function</span>(e) {
+  e.<span class="func">preventDefault</span>();
+  <span class="keyword">const</span> usernameInput = document.<span class="func">querySelector</span>(<span class="str">'#username'</span>);
+  console.<span class="func">log</span>(<span class="str">'Tên đăng nhập:'</span>, usernameInput.value);
+});
+
+<span class="comment">// 3. Sự kiện gõ phím (Keyboard)</span>
+document.<span class="func">addEventListener</span>(<span class="str">'keydown'</span>, <span class="keyword">function</span>(e) {
+  <span class="keyword">if</span> (e.key === <span class="str">'Escape'</span>) {
+    console.<span class="func">log</span>(<span class="str">'Người dùng vừa bấm phím Esc'</span>);
+  }
+});</code></pre>
+
+    <!-- Chuyên đề 6 -->
+    <h3>6. Tạo, Thêm, Xóa phần tử (DOM Manipulation)</h3>
+    <ul>
+      <li><span class="highlight-text">Tạo phần tử:</span> <code>document.createElement()</code>.</li>
+      <li><span class="highlight-text">Thêm vào cây DOM:</span> <code>appendChild()</code>, <code>prepend()</code>, <code>insertAdjacentHTML()</code>.</li>
+      <li><span class="highlight-text">Xóa phần tử:</span> <code>element.remove()</code> hoặc <code>removeChild()</code>.</li>
+    </ul>
+<pre><code><span class="comment">// 1. Tạo phần tử &lt;li&gt; mới</span>
+<span class="keyword">const</span> newItem = document.<span class="func">createElement</span>(<span class="str">'li'</span>);
+newItem.textContent = <span class="str">'Học JavaScript DOM'</span>;
+newItem.classList.<span class="func">add</span>(<span class="str">'item'</span>);
+
+<span class="comment">// 2. Thêm vào thẻ cha &lt;ul&gt;</span>
+<span class="keyword">const</span> list = document.<span class="func">querySelector</span>(<span class="str">'#todo-list'</span>);
+list.<span class="func">appendChild</span>(newItem); <span class="comment">// Thêm vào cuối</span>
+list.<span class="func">prepend</span>(newItem);   <span class="comment">// Thêm vào đầu</span>
+
+<span class="comment">// 3. Thêm nhanh bằng chuỗi HTML</span>
+list.<span class="func">insertAdjacentHTML</span>(<span class="str">'beforeend'</span>, <span class="str">'&lt;li class="item"&gt;Bảo vệ đồ án&lt;/li&gt;'</span>);
+
+<span class="comment">// 4. Xóa phần tử</span>
+<span class="keyword">const</span> oldItem = document.<span class="func">querySelector</span>(<span class="str">'.old-item'</span>);
+<span class="keyword">if</span> (oldItem) oldItem.<span class="func">remove</span>();</code></pre>
+
+    <!-- Chuyên đề 7 -->
+    <h3>7. Duyệt cây DOM (DOM Traversal)</h3>
+    <ul>
+      <li><span class="highlight-text">Đi lên:</span> <code>parentElement</code>, <code>closest(selector)</code>.</li>
+      <li><span class="highlight-text">Đi xuống:</span> <code>children</code>, <code>firstElementChild</code>, <code>lastElementChild</code>.</li>
+      <li><span class="highlight-text">Đi sang ngang:</span> <code>nextElementSibling</code>, <code>previousElementSibling</code>.</li>
+    </ul>
+<pre><code><span class="keyword">const</span> currentCard = document.<span class="func">querySelector</span>(<span class="str">'.card-active'</span>);
+
+<span class="comment">// 1. Đi lên (Cha hoặc phần tử tổ tiên gần nhất)</span>
+<span class="keyword">const</span> parentSection = currentCard.parentElement;
+<span class="keyword">const</span> closestWrapper = currentCard.<span class="func">closest</span>(<span class="str">'.container'</span>);
+
+<span class="comment">// 2. Đi xuống (Các thẻ con)</span>
+<span class="keyword">const</span> cardChildren = currentCard.children;
+<span class="keyword">const</span> firstTitle = currentCard.firstElementChild;
+
+<span class="comment">// 3. Đi sang ngang (Anh / Em cùng cấp)</span>
+<span class="keyword">const</span> nextCard = currentCard.nextElementSibling;
+<span class="keyword">const</span> prevCard = currentCard.previousElementSibling;</code></pre>
+  </div>
+
+  <!-- ====================================================
+       PHẦN 3: BÀI TẬP THỰC HÀNH TƯƠNG TÁC
+       ==================================================== -->
+  <div class="section-card">
+    <h2>Phần 3: Bài Tập Thực Hành JavaScript DOM</h2>
+
+    <!-- Bài tập 1 -->
+    <h3>Bài tập 1: Accordion (Ẩn / Hiện nội dung)</h3>
+    <p><em>Mục tiêu: Sử dụng <code>classList.toggle()</code> và xử lý sự kiện click.</em></p>
+    
+    <div class="faq-item">
+      <button class="faq-btn">JavaScript là gì?</button>
+      <div class="faq-answer hidden">JavaScript là ngôn ngữ lập trình cho web, giúp tạo ra các tương tác động trên trang.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-btn">DOM là gì?</button>
+      <div class="faq-answer hidden">DOM (Document Object Model) là mô hình đối tượng tài liệu dạng cây đại diện cho HTML.</div>
+    </div>
+
+    <!-- Bài tập 2 -->
+    <h3>Bài tập 2: Form Validation &amp; Lấy giá trị Form</h3>
+    <p><em>Mục tiêu: Lấy giá trị input, chặn submit mặc định và hiển thị thông báo lỗi.</em></p>
+
+    <form id="login-form">
+      <div style="margin-bottom: 12px;">
+        <label for="email" style="display: block; font-weight: 500;">Email:</label>
+        <input type="text" id="email" placeholder="Nhập email...">
+        <small id="email-error" class="error-message"></small>
+      </div>
+      <div style="margin-bottom: 12px;">
+        <label for="password" style="display: block; font-weight: 500;">Mật khẩu:</label>
+        <input type="password" id="password" placeholder="Nhập mật khẩu...">
+        <small id="pass-error" class="error-message"></small>
+      </div>
+      <button type="submit">Đăng nhập</button>
+    </form>
+
+    <!-- Bài tập 3 -->
+    <h3>Bài tập 3: Bộ đổi màu nền ngẫu nhiên</h3>
+    <p><em>Mục tiêu: Thay đổi thuộc tính CSS inline qua <code>element.style</code>.</em></p>
+
+    <div id="color-box" class="color-box" style="background-color: #ffffff;">
+      <h4 style="margin-top: 0; color: #0f172a;">Màu hiện tại: <span id="color-code">#FFFFFF</span></h4>
+      <button id="change-color-btn">Đổi màu nền</button>
+    </div>
+
+    <!-- Bài tập 4 -->
+    <h3>Bài tập 4: Xem trước ảnh đại diện (Image Preview)</h3>
+    <p><em>Mục tiêu: Lắng nghe sự kiện <code>input</code> và cập nhật thuộc tính <code>src</code>.</em></p>
+
+    <div style="margin-bottom: 10px;">
+      <label for="img-url" style="display: block; font-weight: 500;">Dán đường dẫn (URL) ảnh vào đây:</label>
+      <input type="text" id="img-url" placeholder="https://example.com/image.jpg">
+    </div>
+    <img id="preview" class="img-preview" src="https://via.placeholder.com/150?text=No+Image" alt="Preview">
+
+    <!-- Bài tập 5 -->
+    <h3>Bài tập 5: Ẩn / Hiện Mật Khẩu</h3>
+    <p><em>Mục tiêu: Thay đổi thuộc tính <code>type</code> của thẻ input dựa vào Checkbox.</em></p>
+
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <input type="password" id="pass-field" placeholder="Nhập mật khẩu">
+      <label style="cursor: pointer; font-size: 14px;">
+        <input type="checkbox" id="toggle-pass"> Hiển thị mật khẩu
+      </label>
+    </div>
+  </div>
+
+</div>
+
+<!-- JavaScript xử lý tương tác bài tập -->
+<script>
+  // ==========================================
+  // BÀI TẬP 1: ACCORDION
+  // ==========================================
+  const buttons = document.querySelectorAll('.faq-btn');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const answer = this.nextElementSibling;
+      answer.classList.toggle('hidden');
+    });
+  });
+
+  // ==========================================
+  // BÀI TẬP 2: FORM VALIDATION
+  // ==========================================
+  const form = document.querySelector('#login-form');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault(); // Chặn load lại trang
+
+    const emailInput = document.querySelector('#email');
+    const passInput = document.querySelector('#password');
+    const emailError = document.querySelector('#email-error');
+    const passError = document.querySelector('#pass-error');
+
+    // Reset thông báo
+    emailError.textContent = '';
+    passError.textContent = '';
+
+    // Kiểm tra
+    if (emailInput.value.trim() === '') {
+      emailError.textContent = 'Vui lòng nhập Email!';
+    }
+    if (passInput.value.length < 6) {
+      passError.textContent = 'Mật khẩu phải từ 6 ký tự trở lên!';
+    }
+  });
+
+  // ==========================================
+  // BÀI TẬP 3: RANDOM BACKGROUND COLOR
+  // ==========================================
+  const colorBtn = document.querySelector('#change-color-btn');
+  const colorText = document.querySelector('#color-code');
+  const colorBox = document.querySelector('#color-box');
+
+  colorBtn.addEventListener('click', function() {
+    const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+    colorBox.style.backgroundColor = randomColor;
+    colorText.textContent = randomColor.toUpperCase();
+  });
+
+  // ==========================================
+  // BÀI TẬP 4: IMAGE PREVIEW
+  // ==========================================
+  const imgUrlInput = document.querySelector('#img-url');
+  const previewImg = document.querySelector('#preview');
+
+  imgUrlInput.addEventListener('input', function() {
+    const url = this.value;
+    if (url.trim() !== '') {
+      previewImg.src = url;
+    } else {
+      previewImg.src = 'https://via.placeholder.com/150?text=No+Image';
+    }
+  });
+
+  // ==========================================
+  // BÀI TẬP 5: SHOW / HIDE PASSWORD
+  // ==========================================
+  const passField = document.querySelector('#pass-field');
+  const toggleCheckbox = document.querySelector('#toggle-pass');
+
+  toggleCheckbox.addEventListener('change', function() {
+    if (this.checked) {
+      passField.type = 'text';
+    } else {
+      passField.type = 'password';
+    }
+  });
+</script>
+
+</body>
+</html>
